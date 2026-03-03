@@ -3,749 +3,1657 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ЄДКІ — Тест (імпорт з тексту)</title>
+  <title>ЄДКІ — Медсестринство — Variant 1-Б (150)</title>
   <style>
     :root{
-      --bg:#071427;
-      --panel:#0b1d36;
-      --panel2:#0a1730;
-      --text:#e9f1ff;
-      --muted:#a9bddc;
-      --line:rgba(255,255,255,.10);
-      --good:#2ad67a;
-      --bad:#ff5a6a;
-      --warn:#ffd166;
-      --btn:#13345f;
-      --btn2:#0f2a4e;
-      --shadow: 0 16px 50px rgba(0,0,0,.35);
-      --radius:18px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      --bg:#0b1220; --card:#0f1b33; --muted:#9fb3d1; --text:#eaf2ff;
+      --accent:#5aa7ff; --ok:#3ddc97; --bad:#ff5a7a; --line:rgba(255,255,255,.10);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --r:18px;
     }
     *{box-sizing:border-box}
     body{
-      margin:0;
-      font-family:var(--sans);
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+      background:radial-gradient(1200px 800px at 15% 0%, rgba(90,167,255,.18), transparent 60%),
+                 radial-gradient(900px 700px at 100% 10%, rgba(61,220,151,.10), transparent 55%),
+                 var(--bg);
       color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(68,140,255,.20), transparent 60%),
-        radial-gradient(900px 600px at 90% 10%, rgba(0,255,200,.10), transparent 60%),
-        radial-gradient(900px 600px at 30% 110%, rgba(255,180,0,.10), transparent 60%),
-        linear-gradient(180deg, #040b16, var(--bg));
-      min-height:100vh;
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:28px 18px 50px}
-    header{
-      display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
-      padding:18px 18px 10px;border:1px solid var(--line);background:rgba(11,29,54,.65);
-      border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter: blur(10px);
+    a{color:inherit}
+    .wrap{max-width:980px; margin:0 auto; padding:18px}
+    .top{
+      display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+      margin-bottom:14px;
     }
-    .title{
-      display:flex;flex-direction:column;gap:6px;
+    .brand{
+      display:flex; flex-direction:column; gap:4px;
     }
-    .title h1{margin:0;font-size:18px;letter-spacing:.3px}
-    .title .sub{color:var(--muted);font-size:13px}
-    .pill{
-      display:inline-flex;gap:10px;align-items:center;
-      border:1px solid var(--line);background:rgba(10,23,48,.8);
-      padding:10px 12px;border-radius:999px;color:var(--muted);font-size:12px
-    }
-    .grid{display:grid;grid-template-columns: 1.1fr .9fr;gap:16px;margin-top:16px}
-    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+    .brand h1{font-size:16px; margin:0; letter-spacing:.2px}
+    .brand .sub{font-size:12px; color:var(--muted)}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
     .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
       border:1px solid var(--line);
-      background:rgba(11,29,54,.6);
-      border-radius:var(--radius);
+      border-radius:var(--r);
       box-shadow:var(--shadow);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
     }
-    .card .hd{
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(19,52,95,.35), rgba(10,23,48,.0));
-      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-    }
-    .card .hd h2{margin:0;font-size:14px;color:var(--text);letter-spacing:.2px}
-    .card .bd{padding:16px}
-    textarea{
-      width:100%;min-height:260px;resize:vertical;
-      background:rgba(7,20,39,.55);
-      color:var(--text);
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px 12px;
-      outline:none;
-      font-family: var(--mono);
-      font-size:12px;
-      line-height:1.35;
-    }
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    label{font-size:12px;color:var(--muted)}
-    select,input[type="number"]{
-      background:rgba(7,20,39,.55);
-      color:var(--text);
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:9px 10px;
-      outline:none;
-      font-size:13px;
-    }
-    input[type="checkbox"]{transform: translateY(1px)}
+    .toolbar{padding:12px}
     .btn{
-      appearance:none;border:none;cursor:pointer;
-      background:linear-gradient(180deg, rgba(23,70,125,.95), rgba(15,42,78,.95));
-      color:var(--text);
-      border:1px solid rgba(255,255,255,.12);
-      padding:10px 12px;border-radius:14px;
-      font-weight:600;font-size:13px;
-      box-shadow: 0 12px 28px rgba(0,0,0,.28);
+      appearance:none; border:1px solid var(--line); background:rgba(255,255,255,.04);
+      color:var(--text); padding:10px 12px; border-radius:14px; cursor:pointer;
+      font-weight:600; font-size:13px;
     }
-    .btn:active{transform: translateY(1px)}
-    .btn.secondary{
-      background:linear-gradient(180deg, rgba(19,52,95,.70), rgba(10,23,48,.85));
-      color:var(--muted);
+    .btn:hover{border-color:rgba(255,255,255,.22)}
+    .btn.primary{background:rgba(90,167,255,.18); border-color:rgba(90,167,255,.35)}
+    .btn.ok{background:rgba(61,220,151,.16); border-color:rgba(61,220,151,.35)}
+    .btn.bad{background:rgba(255,90,122,.14); border-color:rgba(255,90,122,.35)}
+    .pill{
+      font-size:12px; color:var(--muted); border:1px solid var(--line);
+      padding:7px 10px; border-radius:999px; background:rgba(255,255,255,.03);
+      display:flex; gap:8px; align-items:center;
     }
-    .btn.ghost{
-      background:transparent;
-      border:1px solid rgba(255,255,255,.14);
-      color:var(--muted);
-      box-shadow:none;
+    select, input[type="number"]{
+      background:rgba(255,255,255,.04); color:var(--text); border:1px solid var(--line);
+      padding:9px 10px; border-radius:14px; font-weight:600;
     }
-    .hint{color:var(--muted);font-size:12px;line-height:1.4;margin-top:10px}
-    .quizTop{
-      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      margin-bottom:12px
+    .grid{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:14px;
     }
-    .meter{
-      flex:1;min-width:220px;
-      height:10px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(7,20,39,.45);overflow:hidden;
-    }
-    .bar{height:100%;width:0;background:linear-gradient(90deg, rgba(68,140,255,.85), rgba(42,214,122,.85))}
-    .kpis{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .kpi{border:1px solid var(--line);border-radius:999px;padding:8px 10px;background:rgba(10,23,48,.65);color:var(--muted);font-size:12px}
-    .q{
-      padding:14px 14px 10px;border:1px solid var(--line);border-radius:16px;
-      background:rgba(7,20,39,.40);
-    }
-    .q .qno{color:var(--muted);font-size:12px;margin-bottom:8px}
-    .q .qtext{white-space:pre-wrap;font-size:15px;line-height:1.35}
-    .opts{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    @media (max-width: 920px){ .grid{grid-template-columns:1fr} }
+    .qcard{padding:16px}
+    .qmeta{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+    .qtitle{font-size:16px; line-height:1.35; margin:0 0 12px 0}
+    .opts{display:flex; flex-direction:column; gap:10px}
     .opt{
-      display:flex;gap:10px;align-items:flex-start;
-      padding:10px 10px;border-radius:14px;border:1px solid var(--line);
-      background:rgba(10,23,48,.45);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      padding:12px 12px;
+      border-radius:16px;
+      display:flex; gap:10px; align-items:flex-start;
       cursor:pointer;
     }
     .opt:hover{border-color:rgba(255,255,255,.22)}
-    .opt input{margin-top:3px}
-    .opt .t{white-space:pre-wrap;font-size:14px;line-height:1.25}
-    .foot{
-      display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:12px
-    }
-    .status{
-      font-size:12px;color:var(--muted);
-      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-    }
-    .tag{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(10,23,48,.65);color:var(--muted)}
-    .tag.good{color:rgba(42,214,122,.95);border-color:rgba(42,214,122,.25)}
-    .tag.bad{color:rgba(255,90,106,.95);border-color:rgba(255,90,106,.25)}
-    .tag.warn{color:rgba(255,209,102,.95);border-color:rgba(255,209,102,.25)}
-    .review{
-      margin-top:12px;
-      border-top:1px solid var(--line);
-      padding-top:12px;
-      display:none;
-    }
-    .review .item{
+    .opt .k{
+      width:28px; height:28px; border-radius:10px;
+      display:grid; place-items:center;
       border:1px solid var(--line);
-      background:rgba(7,20,39,.35);
-      border-radius:16px;
-      padding:12px;
-      margin-bottom:10px;
+      background:rgba(255,255,255,.04);
+      font-weight:800;
+      flex:0 0 auto;
     }
-    .review .item .hdr{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}
-    .review .item .hdr .left{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .small{font-size:12px;color:var(--muted)}
-    .mono{font-family:var(--mono)}
-    .danger{color:rgba(255,90,106,.95)}
+    .opt .t{font-size:14px; line-height:1.3; color:var(--text)}
+    .opt.sel{border-color:rgba(90,167,255,.55); background:rgba(90,167,255,.10)}
+    .opt.good{border-color:rgba(61,220,151,.55); background:rgba(61,220,151,.10)}
+    .opt.bad{border-color:rgba(255,90,122,.55); background:rgba(255,90,122,.10)}
+    .aside{padding:14px}
+    .aside h2{font-size:13px; margin:0 0 10px 0; color:var(--muted); font-weight:800; letter-spacing:.3px}
+    .stat{display:flex; justify-content:space-between; gap:10px; padding:10px 12px; border:1px solid var(--line);
+      border-radius:16px; background:rgba(255,255,255,.03); margin-bottom:10px}
+    .stat b{font-size:13px}
+    .stat span{font-size:12px; color:var(--muted)}
+    .navgrid{
+      display:grid; grid-template-columns:repeat(10,1fr); gap:6px;
+    }
+    @media (max-width: 520px){ .navgrid{grid-template-columns:repeat(8,1fr)} }
+    .nbtn{
+      padding:8px 0; border-radius:12px; border:1px solid var(--line);
+      background:rgba(255,255,255,.03); color:var(--muted); cursor:pointer;
+      font-weight:800; font-size:12px;
+    }
+    .nbtn:hover{border-color:rgba(255,255,255,.22)}
+    .nbtn.cur{color:var(--text); border-color:rgba(90,167,255,.55); background:rgba(90,167,255,.10)}
+    .nbtn.ans{color:var(--text)}
+    .nbtn.ok{border-color:rgba(61,220,151,.55); background:rgba(61,220,151,.10); color:var(--text)}
+    .nbtn.bad{border-color:rgba(255,90,122,.55); background:rgba(255,90,122,.10); color:var(--text)}
+    .footnote{font-size:12px; color:var(--muted); margin-top:10px; line-height:1.35}
+    .hidden{display:none !important}
+    .hr{height:1px; background:var(--line); margin:12px 0}
   </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <div class="title">
-      <h1>ЄДКІ — Тест (HTML, імпорт з тексту)</h1>
-      <div class="sub">Працює офлайн. Парсить питання з твого тексту формату “1.” + варіанти “A.–E.” + “*” біля правильної.</div>
+  <div class="top">
+    <div class="brand">
+      <h1>ЄДКІ — «Медсестринство» — Variant 1-Б</h1>
+      <div class="sub">Автогенерація з вбудованої бази (150 питань). Працює як один файл для GitHub Pages.</div>
     </div>
-    <div class="pill">
-      <span class="mono">v1</span>
-      <span>•</span>
-      <span id="statePill">Банк не завантажено</span>
+    <div class="row">
+      <div class="pill"><b id="bankStatus">База: завантаження…</b><span id="bankMeta"></span></div>
+      <button class="btn" id="btnReset">Скинути прогрес</button>
     </div>
-  </header>
+  </div>
 
-  <div class="grid">
-    <!-- IMPORT -->
-    <section class="card">
-      <div class="hd">
-        <h2>1) Встав текст тесту → Імпортуй</h2>
+  <div class="card toolbar">
+    <div class="row" style="justify-content:space-between; width:100%">
+      <div class="row">
+        <label class="pill" style="gap:10px">
+          <span>Режим</span>
+          <select id="mode">
+            <option value="practice">Practice (з підказкою після відповіді)</option>
+            <option value="exam">Exam (без підказок до завершення)</option>
+          </select>
+        </label>
+
+        <label class="pill" style="gap:10px">
+          <span>Питань</span>
+          <select id="count">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="150" selected>150</option>
+          </select>
+        </label>
+
+        <label class="pill" style="gap:10px">
+          <span>Перемішати</span>
+          <select id="shuffle">
+            <option value="yes" selected>Так</option>
+            <option value="no">Ні</option>
+          </select>
+        </label>
+
+        <label class="pill" style="gap:10px">
+          <span>Таймер (хв)</span>
+          <input id="minutes" type="number" min="5" max="240" step="5" value="90" style="width:88px" />
+        </label>
+      </div>
+
+      <div class="row">
+        <button class="btn primary" id="btnStart">Почати / Перезапустити</button>
+        <button class="btn ok" id="btnFinish">Завершити тест</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:14px">
+    <div class="card qcard">
+      <div class="qmeta">
+        <div class="pill"><b id="progress">—</b><span id="timer">⏱ —</span></div>
         <div class="row">
-          <button class="btn secondary" id="btnPasteHint" type="button">Формат</button>
-          <button class="btn" id="btnImport" type="button">Імпортувати банк</button>
+          <button class="btn" id="prev">← Назад</button>
+          <button class="btn" id="next">Далі →</button>
         </div>
       </div>
-      <div class="bd">
-        <textarea id="raw">
-1.	Приклад питання…
-A.	Варіант 1
-B.	Варіант 2 *
-C.	Варіант 3
-D.	Варіант 4
-E.	Варіант 5
+      <h2 class="qtitle" id="qtext">Натисни “Почати”, щоб завантажити питання.</h2>
+      <div class="opts" id="opts"></div>
 
-2.	Ще приклад…
-A.	…
-B.	… *
-C.	…
-D.	…
-E.	…
-        </textarea>
-
-        <div class="hint" id="formatHint" style="display:none">
-          <div class="small">
-            <b>Очікуваний формат</b> (як у твоєму документі):<br/>
-            • Номер: <span class="mono">123.</span> або <span class="mono">123)</span><br/>
-            • Варіанти: <span class="mono">A.</span> … <span class="mono">E.</span><br/>
-            • Правильна відповідь позначена зірочкою <span class="mono">*</span> у кінці рядка варіанта<br/>
-            • Можна кілька рядків у питанні — парсер збере їх докупи.
-          </div>
-          <div class="small" style="margin-top:8px">
-            Якщо в якомусь питанні зірочки немає — нижче є <span class="mono">answerKeyFallback</span> (я вже додав туди №29 → C).
-          </div>
-        </div>
-
-        <div class="row" style="margin-top:12px">
-          <div class="row">
-            <label>Режим</label>
-            <select id="mode">
-              <option value="practice">Practice (показувати відповідь одразу)</option>
-              <option value="exam">Exam (перевірка в кінці)</option>
-            </select>
-          </div>
-          <div class="row">
-            <label>К-сть питань</label>
-            <input type="number" id="count" min="1" value="50" />
-          </div>
-          <div class="row">
-            <label><input type="checkbox" id="shuffle" checked /> Перемішати</label>
-          </div>
-          <div class="row">
-            <label><input type="checkbox" id="timerOn" /> Таймер</label>
-            <input type="number" id="minutes" min="1" value="60" />
-            <label>хв</label>
-          </div>
-          <div style="flex:1"></div>
-          <button class="btn" id="btnStart" type="button">Почати тест</button>
-          <button class="btn ghost" id="btnReset" type="button">Скинути</button>
-        </div>
-
-        <div class="hint" id="importStats"></div>
+      <div class="hr"></div>
+      <div class="row">
+        <button class="btn" id="btnReveal">Показати правильну (Exam)</button>
+        <button class="btn bad" id="btnClear">Очистити відповідь</button>
       </div>
-    </section>
+      <div class="footnote" id="hint"></div>
+    </div>
 
-    <!-- QUIZ -->
-    <section class="card">
-      <div class="hd">
-        <h2>2) Проходження</h2>
-        <div class="row">
-          <button class="btn secondary" id="btnPrev" type="button">← Назад</button>
-          <button class="btn secondary" id="btnNext" type="button">Далі →</button>
-          <button class="btn" id="btnFinish" type="button">Завершити</button>
-        </div>
+    <div class="card aside">
+      <h2>Статистика</h2>
+      <div class="stat"><b>Відповіли</b><span id="stAnswered">0</span></div>
+      <div class="stat"><b>Правильно</b><span id="stCorrect">0</span></div>
+      <div class="stat"><b>Неправильно</b><span id="stWrong">0</span></div>
+      <div class="stat"><b>Результат</b><span id="stScore">—</span></div>
+
+      <div class="hr"></div>
+      <h2>Навігація</h2>
+      <div class="navgrid" id="nav"></div>
+
+      <div class="footnote">
+        Legend: зелений — правильно, червоний — помилка, синій — поточне.
+        У <b>Practice</b> одразу показує правильність. У <b>Exam</b> — тільки після “Завершити” або “Показати правильну”.
       </div>
-      <div class="bd">
-        <div class="quizTop">
-          <div class="meter" aria-label="progress"><div class="bar" id="bar"></div></div>
-          <div class="kpis">
-            <div class="kpi" id="kpiPos">—</div>
-            <div class="kpi" id="kpiScore">—</div>
-            <div class="kpi" id="kpiTimer">—</div>
-          </div>
-        </div>
-
-        <div class="q" id="qBox">
-          <div class="qno" id="qNo">Імпортуй банк і натисни “Почати тест”.</div>
-          <div class="qtext" id="qText"></div>
-          <div class="opts" id="opts"></div>
-        </div>
-
-        <div class="foot">
-          <div class="status" id="status"></div>
-          <div class="row">
-            <button class="btn ghost" id="btnJump" type="button">Перейти до №</button>
-            <button class="btn ghost" id="btnReviewToggle" type="button">Огляд</button>
-          </div>
-        </div>
-
-        <div class="review" id="review"></div>
-      </div>
-    </section>
+    </div>
   </div>
 </div>
 
 <script>
-  // Якщо в деяких питаннях у джерелі немає "*", можна підстрахуватися тут:
-  // Формат: номер_питання : "A"|"B"|"C"|"D"|"E"
-  const answerKeyFallback = {
-    29: "C", // у твоєму тексті №29 без "*" (правильне: "метелик" — варіант C)
-  };
+/**
+ * ВАЖЛИВО:
+ * - Нижче в DATA_RAW — твій повний банк 1..150, як ти прислав, зі зірочками біля правильних відповідей.
+ * - Код парсить його у структуровану базу автоматично.
+ * - Після заливки у GitHub Pages все працює без серверів.
+ */
 
-  const els = {
-    statePill: document.getElementById("statePill"),
-    raw: document.getElementById("raw"),
-    btnImport: document.getElementById("btnImport"),
-    btnStart: document.getElementById("btnStart"),
-    btnReset: document.getElementById("btnReset"),
-    btnPrev: document.getElementById("btnPrev"),
-    btnNext: document.getElementById("btnNext"),
-    btnFinish: document.getElementById("btnFinish"),
-    btnReviewToggle: document.getElementById("btnReviewToggle"),
-    btnJump: document.getElementById("btnJump"),
-    mode: document.getElementById("mode"),
-    count: document.getElementById("count"),
-    shuffle: document.getElementById("shuffle"),
-    timerOn: document.getElementById("timerOn"),
-    minutes: document.getElementById("minutes"),
-    importStats: document.getElementById("importStats"),
-    bar: document.getElementById("bar"),
-    kpiPos: document.getElementById("kpiPos"),
-    kpiScore: document.getElementById("kpiScore"),
-    kpiTimer: document.getElementById("kpiTimer"),
-    qNo: document.getElementById("qNo"),
-    qText: document.getElementById("qText"),
-    opts: document.getElementById("opts"),
-    status: document.getElementById("status"),
-    review: document.getElementById("review"),
-    btnPasteHint: document.getElementById("btnPasteHint"),
-    formatHint: document.getElementById("formatHint"),
-  };
+const DATA_RAW = String.raw`
+1.	Укажіть частий побічний ефект, що може розвинутися в пацієнта під час внутрішньовенного введення 1 %-го розчину нікотинової кислоти.
+A.	Порушення зору
+B.	Відчуття жару в тілі *
+C.	Закреп
+D.	Брадикардія
+E.	Сонливість
 
-  let bank = [];        // всі питання
-  let session = [];     // питання в поточній спробі
-  let idx = 0;
-  let answers = new Map();  // sessionIndex -> "A"..."E"
-  let finished = false;
+2.	Роділлю проінформовано про активне ведення третього періоду фізіологічних пологів, що передбачає введення утеротоніків — 10 ОД окситоцину. Який шлях його введення в цьому разі?
+A.	Внутрішньошкірно
+B.	Внутрішньовенно струминно
+C.	Внутрішньом’язово *
+D.	Ректально
+E.	Підшкірно
 
-  let timer = {
-    on:false, endAt:0, interval:null
-  };
+3.	У пацієнтки перебіг цукрового діабету ускладнився розвитком синдрому діабетичної стопи. Які поради по догляду за нижніми кінцівками необхідно надати пацієнтці?
+A.	Приймати гарячі ванни для ніг
+B.	Не ходити босоніж *
+C.	Носити відкрите взуття
+D.	Користуватися пемзою
+E.	Використовувати тальк
 
-  els.btnPasteHint.addEventListener("click", () => {
-    els.formatHint.style.display = (els.formatHint.style.display === "none") ? "block" : "none";
-  });
+4.	У чоловіка після роботи з електроприладом на долоні правої руки візуалізується ділянка некрозу шкіри — біло-сіра пляма діаметром 4 мм. Який вид місцевої
+електротравми спостерігається в чоловіка?
+A.	Механічне ушкодження
+B.	Електричний опік
+C.	Металізація шкіри
+D.	Електричний знак *
+E.	Електроофтальмія
 
-  function normalizeLine(s){
-    return (s || "")
-      .replace(/\u00A0/g, " ")
-      .replace(/\t/g, " ")
-      .trimEnd();
-  }
+5.	Укажіть найінформативніший метод діагностики набутих вад серця.
+A.	Ехокардіографія*
+B.	Ангіографія
+C.	Пульсоксиметрія
+D.	Спірометрія
+E.	Реовазографія
 
-  function parseQuestions(rawText){
-    const lines = rawText.split(/\r?\n/).map(normalizeLine);
+6.	Укажіть біологічно активну речовину, що міститься у секреті слинних залоз медичних п’явок.
+A.	Гістамін
+B.	Лізоцим
+C.	Фібринолізин
+D.	Гепарин
+E.	Гірудин*
+ 
+7.	Для якого захворювання характерний такий симптомокомплекс: «маскоподібне обличчя», кисетоподібні складки навколо рота, синдром Рейно?
+A.	Ревматоїдного артриту
+B.	Червоного системного вовчака
+C.	Системної склеродермії*
+D.	Вузликового периартеріїту
+E.	Гострої ревматичної гарячки
 
-    const qStart = /^\s*(\d+)\s*[.)]\s*(.*)$/;
-    const optLine = /^\s*([A-E])\s*[.)]\s*(.*)$/;
+8.	У пацієнтки, яка хворіє на цукровий діабет 1-го типу, після випадкового передозування інсуліну виникло відчуття голоду, з’явилися різка слабкість,
+запаморочення, занепокоєння, тремтіння рук, підвищене потовиділення, прискорене серцебиття. Свідомість збережена. Які заходи долікарської допомоги необхідно надати пацієнтці насамперед?
+A.	Запропонувати прийняти 15-20 крапель корвалолу
+B.	Увести інсулін підшкірно
+C.	Запропонувати вжити прості вуглеводи (цукор, солодку воду) *
+D.	Застосувати нітрогліцерин сублінгвально
+E.	Дати вдихнути пари нашатирного спирту
 
-    const out = [];
-    let cur = null;
-    let inOptions = false;
+9.	Пацієнт скаржиться на втрату апетиту, гіркий присмак у роті, біль і відчуття тяжкості у правому підребер’ї, жовтяничність шкіри і склер, свербіж шкіри, біль у суглобах. За результатами біохімічного дослідження крові виявлено: високий рівень прямого білірубіну, виражена активність аланінамінотрансферази. Для якого захворювання характерні вказані клініко-лабораторні показники?
+A.	Хвороби Крона
+B.	Хронічного панкреатиту
+C.	Виразкової хвороби шлунка
+D.	Гострого гастриту
+E.	Хронічного гепатиту*
 
-    function pushCur(){
-      if(!cur) return;
-      // fallback correct
-      if(!cur.correct && answerKeyFallback[cur.no]) cur.correct = answerKeyFallback[cur.no];
-      // sanity: only push if has stem + >=2 opts
-      const optCount = Object.keys(cur.options || {}).length;
-      if(cur.text.trim() && optCount >= 2){
-        out.push(cur);
-      }
-      cur = null;
-      inOptions = false;
+10.	Пацієнту встановлено діагноз: гострий пієлонефрит. Чим зумовлений біль у поперековій ділянці, що характерний для цього захворювання?
+A.	Уремією
+B.	Підвищенням артеріального тиску
+C.	Корінцевим синдромом
+D.	Розтягненням ниркової капсули *
+E.	Дизуричними розладами
+
+11.	Розвиток якого патологічного стану вказує на те, що в пацієнта триває III стадія артеріальної гіпертензії?
+A.	Тиреотоксикозу
+B.	Ниркової недостатності*
+C.	Дихальної недостатності
+D.	Печінкової недостатності
+E.	Діабетичної нефропатії
+
+12.	Пацієнту призначено фізіотерапевтичну процедуру, під час якої (внаслідок змінення проникності судинної стінки) у шкірі виникають точкові мікрокрововиливи (петехії, плями), до складу яких входять біологічно активні речовини, що надають потужний стимулювальний ефект як на весь організм, так і на певну зону до повного їх розсмоктування. Яку процедуру призначено пацієнту?
+A.	Накладання зігрівального компресу
+B.	УВЧ-терапію
+C.	Накладання гірчичників
+D.	Застосування медичної грілки
+E.	Вакуум-терапію медичними банками*
+
+13.	Укажіть необхідне оснащення точки догляду за пацієнтом.
+A.	Кран із ліктьовим механізмом
+B.	Диспенсер із паперовими одноразовими рушниками
+C.	Диспенсер із рідким милом
+D.	Диспенсер з антисептиком *
+E.	Умивальник
+
+14.	У пацієнта, який перебуває в реанімаційному відділенні, спостерігається хвилеподібна зміна амплітуди дихання з паузами між хвилями 40-50 с. Укажіть патологічний тип дихання.
+A.	Задуха
+B.	Біота
+C.	Куссмауля
+D.	Апное
+E.	Чейна-Стокса*
+
+15.	У породіллі після пологів виявлено розрив задньої спайки та стінки піхви, а також шкіри промежини довжиною 1 см, м’язи промежини неушкоджені. Укажіть ступінь розриву промежини.
+A.	II
+B.	І*
+C.	III
+D.	–
+E.	IV
+
+16.	У пацієнта після вживання лісових горіхів раптово виникли захриплість голосу,
+«гавкаючий кашель», утруднене дихання. Об’єктивно спостерігається: пацієнт стривожений, шкіра обличчя ціанотична, повіки та губи набряклі, щільні на дотик, свербежу немає, пульс — 84/хв, ритмічний, АТ — 110/70 мм рт. ст. Який патологічний стан розвинувся в пацієнта?
+A.	Аспірація стороннього тіла
+B.	Кропив’янка
+C.	Набряк Квінке*
+D.	Дифтерійний круп
+E.	Анафілактичний шок
+
+17.	У пацієнта гематологічного відділення на шкірі тулуба візуалізується петехіально- плямистий висип різноманітного кольору (від пурпурно-червоного до зеленуватого і жовтого), у місцях стискання тулуба та кінцівок одягом — дрібні гематоми. В аналізі крові: тромбоцити — 50 • 109/л, час кровотечі подовжений. Для якого захворювання
+характерні ці клініко-лабораторні показники?
+A.	Хронічного мієлолейкозу
+B.	Гсмолітичної анемії
+C.	Гемофілії А
+D.	Лімфогранулематозу
+E.	Ідіопатичної тромбоцитопенічної пурпури*
+
+18.	У роділлі триває латентна фаза першого періоду фізіологічних пологів.
+Пологи І, вагітність II, термін вагітності — 38 тижнів. Укажіть сучасний безпечний метод функціональної діагностики, який застосовується для одночасного динамічного
+спостереження за внутрішньоутробним станом плода та скоротливою здатністю матки.
+A.	Ультрасонографія
+B.	Кардіотокографія*
+C.	Сцинтиграфія
+D.	Електрокардіографія
+E.	Електроміографія
+
+19.	Який лікарський засіб використовується для надання невідкладної допомоги пацієнту у разі виникнення колапсу?
+A.	Фуросемід
+B.	Кордіамін*
+C.	Клофелін
+D.	Папаверин
+E.	Строфантин
+
+20.	Дієтотерапія — це метод лікування за допомогою раціонального харчування. Що означає принцип заміщення в дієтотерапії?
+A.	Уведення в раціон харчування продуктів, у компонентах яких організм має дефіцит*
+B.	Уникання можливості вживання продуктів, забруднених мікробами
+C.	Вживання продуктів харчування з тривалим терміном придатності
+D.	Виключення з раціону харчування їжі, багатої на клітковину
+E.	Збалансування раціону харчування щодо білків, жирів, вуглеводів
+
+21.	Який вид гастриту (за характером патологічних змін слизової оболонки шлунка) може розвинутися в потерпілої особи внаслідок випадкового споживання концентрованої кислоти (зокрема оцтової кислоти)?
+A.	Еритематозний
+B.	Флегмонозний
+C.	Корозивний *
+D.	Катаральний
+E.	Фібринозний
+
+22.	Пацієнт скаржиться на підвищення температури тіла до 39°С, головний біль та різкий розпираючий біль у ділянці задньої поверхні шиї. Об’єктивно спостерігається: на ураженій ділянці шиї візуалізується щільний інфільтрат темно- червоного кольору, діаметром 7-8 см, різко болючий під час пальпації, вкритий дрібними множинними отворами, із яких виділяється гнійна рідина (симптом «сита»). Який запальний процес розвинувся в пацієнта?
+A.	Фурункул
+B.	Гідраденіт
+C.	Карбункул *
+D.	Фурункульоз
+E.	Бешиха
+ 
+23.	Як називається графічний запис вимірювання висоти стояння дна матки (ВДМ) з метою динамічного спостереження за зростанням плода, починаючи з 20-го тижня вагітності?
+A.	Кардіограма
+B.	Міограма
+C.	Партограма
+D.	Токограма
+E.	Гравідограма*
+
+24.	Як називається індивідуальна упаковка, що безпосередньо контактує з лікарським засобом та сприяє збереженню його основних властивостей?
+A.	Зовнішня
+B.	Вторинна
+C.	Спеціальна
+D.	Загальна
+E.	Первинна*
+
+25.	Пацієнту віком 35 років встановлено діагноз: сухий плеврит. Які клінічні прояви характерні для цього захворювання?
+A.	Стискальний біль за грудниною з іррадіацією в ліву руку, що триває близько 5 хв
+B.	Біль у грудній клітці, що посилюється під час глибокого вдиху та нахилах тулуба в протилежний бік*
+C.	Експіраторна задишка, кашель із виділенням склоподібного в’язкого мокротиння
+D.	Кашель із виділенням слизово-гнійного мокротиння, задишка, підвищення температури тіла до субфебрильних цифр
+E.	Кашель із виділенням гнійного мокротиння, переважно вранці, «повним ротом»
+
+26.	У чоловіка віком 62 роки після стресу раптово розвинулися загальна слабкість, прискорене серцебиття та різкий стискальний біль за грудниною, що іррадіює в ліву руку та не минає після приймання нітрогліцерину. Який патологічний стан, найімовірніше, розвинувся в пацієнта?
+A.	Міокардит
+B.	Інфаркт міокарда*
+C.	Печінкова коліка
+D.	Набряк легень
+E.	Напад стенокардії
+
+27.	Чоловіку віком 34 роки встановлено попередній діагноз: менінгококовий менінгіт та з діагностичною метою призначено спинномозкову пункцію. Який медичний інструмент треба підготувати сестрі медичній для проведення цієї процедури?
+A.	Біопсійну голку
+B.	Голку Касирського
+C.	Голку Дюфо
+D.	Голку Біра*
+E.	Троакар
+ 
+28.	Яка шкала використовується для догоспітальної діагностики гострого порушення мозкового кровообігу?
+A.	NIHSS
+B.	NRS
+C.	FAST*
+D.	MMSE
+E.	ABCDE
+
+29.	Пацієнтці віком 52 роки встановлено діагноз: системний червоний вовчак. Які з нижченаведених симптомів характерні для цього захворювання?
+A.	«Маскоподібне обличчя», кисетоподібні складки навколо рота, ущільнення шкіри кистей та розвиток їх контрактур
+B.	Ранкова скутість, біль у дрібних суглобах кистей і стоп, деформація суглобів
+C.	Еритематозний висип на спинці носа та вилицях у вигляді «метелика», біль у м’язах, підвищення температури тіла до фебрильних цифр*
+D.	Летючий характер болю у великих суглобах, підвищення температури тіла до субфебрильних цифр
+E.	Відчуття оніміння пальців рук, зниження чутливості кінцівок за типом
+«рукавичок» і «шкарпеток»
+
+30.	Пацієнту призначено підшкірне введення олійного розчину. Які дії має виконати сестра медична для попередження розвитку медикаментозної емболії під час виконання ін’єкції?
+A.	Дотримуватися правил асептики
+B.	Змінювати місце ін’єкцій
+C.	Перевірити кут і глибину введення голки
+D.	Перевірити, чи не потрапила голка в просвіт кровоносної судини *
+E.	Промасажувати місце ін’єкції стерильною ватною кулькою
+
+31.	Пацієнтка віком 23 роки скаржиться на періодичний біль унизу живота, незначні кров’янисті виділення зі статевих шляхів та затримку менструації впродовж 6-ти тижнів. Попередній діагноз: позаматкова вагітність. Рівень якого гормону доцільно дослідити в крові жінки для підтвердження цього діагнозу?
+A.	Пролактину
+B.	Естрадіолу
+C.	Хоріонічного гонадотропіну *
+D.	Окситоцину
+E.	Прогестерону
+
+32.	Старша сестра медична інструктує своїх підлеглих щодо правил гігієни рук. Який тип нагадування на робочому місці є найефективнішим для активізації уваги?
+A.	Аудіоповідомлення
+B.	Накази
+C.	Інформаційні плакати *
+D.	Санбюлетні
+E.	Конференції
+
+33.	У пацієнта спостерігаються клінічні прояви харчової алергії. Яке з нижченаведених досліджень є найінформативнішим для встановлення причини алергії?
+A.	Загальний аналіз крові
+B.	Шкірна скарифікаційна проба*
+C.	Проба Манту
+D.	Біопсія шкіри
+E.	Біохімічний аналіз крові
+
+34.	Чоловік віком 37 років скаржиться на нудоту, блювання, сухість у роті, відчуття
+«туману» перед очима, утруднення під час ковтання. Вказані симптоми з’явилися через добу після вживання в’яленої риби. Для якого захворювання характерні ці клінічні прояви?
+A.	Поліомієліту
+B.	Шигельозу
+C.	Сальмонельозу
+D.	Харчової токсикоінфекції
+E.	Ботулізму*
+
+35.	Пацієнту в першу добу після травми показане прикладання міхура з льодом до місця ушкодження. Оберіть правильний режим його застосування, щоб уникнути місцевого переохолодження.
+A.	Кожні 5 хв робити перерву на 20-30 хв
+B.	Кожні 20 хв робити перерву на 10-15 хв*
+C.	Кожні 60 хв робити перерву на 20-30 хв
+D.	-
+E.	Кожні 40 хв робити перерву на 10-15 хв
+
+36.	Який із нижченаведених методів дослідження є найінформативнішим для діагностики туберкульозу легень?
+A.	Спірометрія
+B.	Біохімічний аналіз крові
+C.	Стернальна пункція
+D.	Оглядова рентгенографія органів грудної клітки*
+E.	Загальний аналіз крові
+
+37.	Вагітній жінці діагностовано тазове передлежання плода. У якому терміні вагітності можна виконати операцію зовнішнього повороту плода, для того, щоб вагітність закінчилася пологами через природні пологові шляхи?
+A.	38 тижнів
+B.	40 тижнів
+C.	28 тижнів
+D.	42 тижні
+E.	36 тижнів*
+
+38.	Який етіологічний фактор має вирішальне значення у розвитку гострого гломерулонефриту?
+A.	Порушення обміну речовин
+B.	Інфікування β-гемолітичним стрептококом*
+C.	Аутоімунні захворювання
+D.	Професійні інтоксикації
+E.	Споживання гострої та жирної їжі
+ 
+39.	Укажіть типове ускладнення інтерстиціальної пневмонії.
+A.	Бронхіальна астма
+B.	Емфізема легень
+C.	Легенева кровотеча
+D.	Пневмосклероз *
+E.	Кардіосклероз
+
+40.	Лікар-педіатр ЦПМСД встановив восьмирічній дитині діагноз: скарлатина. Який документ необхідно заповнити для обліку цього захворювання?
+A.	Журнал реєстрації амбулаторних пацієнтів
+B.	Медичну карту стаціонарного хворого
+C.	Контрольну карту диспансерного нагляду
+D.	Медичну карту амбулаторного хворого
+E.	Екстрене повідомлення про інфекційне захворювання	*
+
+41.	У пульмонологічному відділенні лікується пацієнт із діагнозом: бронхоектатична хвороба. Який метод фізіотерапії використовується для покращення відходження слизу та мокротиння з дихальних шляхів?
+A.	Парафінові аплікації
+B.	Фонофорез
+C.	Кріотерапія
+D.	Постуральний дренаж *
+E.	Зігрівальні компреси
+
+42.	Упродовж якого терміну часу потрібно провести обстеження на ВІЛ медичного працівника, у якого відбувся контакт із джерелом потенційного інфікування ВІЛ, пов’язаний із виконанням професійних обов’язків?
+A.	1-го місяця
+B.	5-ти днів*
+C.	14-ти днів
+D.	3-х місяців
+E.	2-х місяців
+
+43.	Укажіть причину ранньої післяпологової кровотечі, яку можна виявити, оглядаючи послід.
+A.	Порушення виділення плаценти
+B.	Защемлення плаценти
+C.	Порушення зсідання крові
+D.	Щільне прикріплення плаценти
+E.	Затримка частин плаценти в порожнині матки*
+
+44.	Щеплення новонароджених дітей від туберкульозу проводиться шляхом внутрішньошкірного введення вакцини БЦЖ. Яке ускладнення розвивається у разі випадкового потрапляння вакцини під шкіру?
+A.	Інфільтрат
+B.	Виразка
+C.	«Холодний абсцес» *
+D.	Олійна емболія
+E.	Ліподистрофія
+ 
+45.	Укажіть порушення діурезу, що характеризується зменшенням добової кількості сечі.
+A.	Олігурія *
+B.	Полакіурія
+C.	Дизурія
+D.	Поліурія
+E.	Ніктурія
+
+46.	Жінка отримала опік передньої поверхні обох ніг, задньої поверхні тулуба та промежини. Визначте площу опікового ураження за «правилом дев’яток».
+A.	19%
+B.	25%
+C.	37%*
+D.	51%
+E.	39%
+
+47.	У пацієнта після укусу бджоли раптово виник сильний головний біль, з’явилися психоемоційне збудження, нудота, парестезії, а згодом — судоми з втратою свідомості та мимовільним сечовипусканням і дефекацією. АТ — 70/40 мм рт. ст. Який варіант анафілактичного шоку розвинувся в пацієнта?
+A.	Абдомінальний
+B.	Гемодинамічний
+C.	Асфіктичний
+D.	Церебральний *
+E.	Кардіогенний
+
+48.	Сестра медична проводить сортування медичних відходів після виконання
+лікарських призначень. До якої категорії відходів належить первинна упаковка отруйного лікарського засобу?
+A.	-
+B.	D
+C.	С *
+D.	А
+E.	В
+
+49.	Пацієнт скаржиться на біль у надлобковій ділянці, неможливість випорожнити сечовий міхур. Сечовиділення відсутнє впродовж 12 год. Який патологічний стан розвинувся в пацієнта?
+A.	Ниркова коліка
+B.	Поліурія
+C.	Ніктурія
+D.	Гостра затримка сечі *
+E.	Олігурія
+
+50.	У якому періоді менструального циклу найчастіше виникає апоплексія яєчника?
+A.	У період менструації
+B.	У період регресу жовтого тіла
+C.	У люте'їновій фазі
+D.	У фолікуліновій фазі
+E.	У період овуляції*
+
+51.	Для якого захворювання травної системи типові такі особливості больового синдрому: біль в епігастрії з’являється натщесерце, вночі або через 3-4 год після останнього вживання їжі та зникає навіть після незначного вживання будь- яких продуктів харчування?
+A.	Хронічного холециститу
+B.	Хронічного атрофічного гастриту
+C.	Виразкової хвороби дванадцятипалої кишки*
+D.	Хронічного панкреатиту
+E.	Виразкової хвороби шлунка
+
+52.	Чоловіку віком 40 років встановлено попередній діагноз: геморагічний інсульт. У якому положенні потрібно транспортувати пацієнта до стаціонару?
+A.	На спині, з припіднятою головою*
+B.	На животі, з підкладеним під грудну клітку валиком
+C.	На спині, з припіднятими нижніми кінцівками
+D.	На правому боці
+E.	Сидячи
+
+53.	Пацієнтка віком 23 роки скаржиться на різкий біль у правій клубовій ділянці з іррадіацією в пряму кишку, короткочасне запаморочення, які виникли після фізичного навантаження. З анамнезу відомо, що остання менструація була 3 тижні тому,
+менструальний цикл регулярний, пацієнтка використовує бар’єрні методи контрацепції. Об’єктивно спостерігається: шкірні покриви бліді, АТ — 100/60 мм рт. ст., пульс — 90/хв, живіт напружений у нижніх відділах. Результати гінекологічного дослідження: слизова оболонка шийки матки блідо-рожевого кольору, матка не збільшена, щільної консистенції, безболісна, придатки матки праворуч різко болючі, зліва — без особливостей, заднє склепіння піхви згладжене, болюче, виділення зі статевих шляхів слизові. Який патологічний стан розвинувся в пацієнтки?
+A.	Прогресуюча позаматкова вагітність
+B.	Гострий апендицит
+C.	Порушена позаматкова вагітність
+D.	Апоплексія яєчника *
+E.	Гострий сальпінгоофорит
+
+54.	Сестра медична, надаючи медичну допомогу пацієнту, в якого розвинувся напад стенокардії, застосувала нітрогліцерин 0,5 мг сублінгвально. Укажіть фармакологічну властивість цього лікарського засобу.
+A.	Розширює коронарні судини*
+B.	Покращує метаболізм
+C.	Поліпшує функцію ендотелію
+D.	Підвищує силу і швидкість скоротливості міокарда
+E.	Розслабляє гладку мускулатуру бронхів
+
+55.	До приймального відділення шпиталізовано жінку віком 28 років у непритомному стані. Зі слів родичів з’ясувалося, що вона хворіє на цукровий діабет, 3 дні тому її стан погіршився, з’явилися нудота, блювання, біль у животі, сонливість. Об’єктивно
+спостерігається: шкіра суха, запах ацетону з рота, ЧД — 30/хв, пульс — 100/хв, слабкого наповнення, АТ — 85/55 мм рт. ст. Для якого виду коми характерні ці клінічні прояви?
+A.	Уремічної
+B.	Гіпоглікемічної
+C.	Печінкової
+D.	Церебральної
+E.	Гіперглікемічної*
+
+56.	Який найпростіший фізіотерапевтичний метод використовується для надання долікарської допомоги потерпілій особі у перші 2-3 год після забою колінного суглоба без пошкодження шкіри?
+A.	Прикладання міхура з льодом до місця травми*
+B.	Накладання гірчичників
+C.	Прикладання грілки до місця травми
+D.	Занурення травмованої кінцівки в гарячу воду
+E.	Накладання зігрівального компресу
+
+57.	У пацієнта, який довгий час хворіє на виразкову хворобу дванадцятипалої кишки, спостерігається зміна симптоматики: біль у животі став оперізувальним постійним, інтенсивним, припинив залежати від уживання їжі. Яке ускладнення основного захворювання, найімовірніше, розвинулося в пацієнта?
+A.	Пілоростеноз
+B.	Перфорація
+C.	Ахалазія кардії
+D.	Пенетрація *
+E.	Малігнізація
+
+58.	У пацієнта нефрологічного відділення під час лабораторного дослідження сечі виявлено: олігурію, гематурію, протеїнурію. В осаді сечі: нирковий епітелій, гіалінові та зернисті циліндри. Для якого захворювання нирок характерні ці лабораторні зміни?
+A.	Гострого циститу
+B.	Гострого пієлонефриту
+C.	Сечокам’яної хвороби
+D.	Хронічного пієлонефриту
+E.	Гострого гломерулонефриту*
+
+59.	Пацієнт перебуває на стаціонарному лікуванні в травматологічному відділенні у зв’язку з переломом верхньої кінцівки. Укажіть правильну послідовність одягання натільної білизни (сорочки) на пацієнта в цьому разі.
+A.	Через голову, потім на здорову руку, далі на хвору руку і розправити
+B.	Через голову, потім на хвору руку, далі на здорову руку і розправити
+C.	Спочатку на хвору руку, потім через голову, далі на здорову руку і розправити
+D.	Спочатку на здорову руку, потім на хвору руку, далі через голову і розправити
+E.	Спочатку на хвору руку, потім на здорову руку, далі через голову і розправити*
+
+60.	Який режим фізичної активності необхідно забезпечити пацієнту, в якого спостерігається активна фаза перебігу хронічного пієлонефриту (температура тіла — 39,0°С, слабкість, біль у поперековій ділянці тощо)?
+A.	Активний
+B.	Ліжковий *
+C.	Палатний
+D.	Загальний
+E.	Кімнатний
+ 
+61.	Яка з нижченаведених груп лікарських засобів використовується для етіотропного лікування хронічного пієлонефриту?
+A.	Антитромботичні
+B.	Нестероїдні протизапальні
+C.	Діуретики
+D.	Антигістамінні
+E.	Антибактеріальні*
+
+62.	Для якого клінічного варіанта інфаркту міокарда характерні відсутність больового синдрому та наявність сухого кашлю та прогресуючої задишки?
+A.	Ангінозного
+B.	Аритмічного
+C.	Церебрального
+D.	Гастралгічного
+E.	Астматичного*
+
+63.	Які параметри враховуються під час оцінювання ефективності пологової діяльності?
+A.	Розміри голівки плода та ступінь її конфігурації
+B.	Частота, тривалість та інтенсивність перейм*
+C.	Розміри площини входу в малий таз та зовнішньої кон’югати
+D.	Артеріальний тиск роділлі та частота серцевих скорочень плода
+E.	Е. –
+
+64.	Який із нижченаведених факторів ризику зумовлює виникнення серцево- судинних захворювань у людей віком понад 40 років?
+A.	Анемія
+B.	Вірусні інфекції
+C.	Гіперхолестеринемія*
+D.	Спадковість
+E.	Диспротеїнемія
+
+65.	У пацієнта одразу після введення вакцини з’явилися різка слабкість, запаморочення, прискорене серцебиття, утруднення дихання, відчуття страху смерті, шум у вухах. Об’єктивно спостерігається: шкіра бліда, вкрита холодним потом, дихання часте, поверхневе, пульс — 120/хв, слабкого наповнення, АТ — 70/30 мм рт. ст. Який патологічний стан розвинувся в пацієнта?
+A.	Напад бронхіальної астми
+B.	Кардіогенний шок
+C.	Гіповолемічний шок
+D.	Анафілактичний шок *
+E.	Набряк Квінке
+
+66.	Пацієнт скаржиться на розпираючий біль унизу живота та неспроможність самостійно
+спорожнити сечовий міхур упродовж 10-ти годин. В анамнезі: сечокам’яна хвороба. Укажіть заходи невідкладної допомоги пацієнту в цьому разі.
+A.	Обмеження вживання рідини
+B.	Прикладання міхура з льодом на низ живота
+C.	Катетеризація сечового міхура *
+D.	Обмеження вживання харчової солі
+E.	Літотрепсія (дроблення каменів у нирках)
+
+67.	Пацієнтка віком 56 років скаржиться на сухість у роті, невгамовну спрагу, загальну слабкість, постійне відчуття голоду, втрату маси тіла, свербіж шкіри, часте сечовипускання, порушення зору. Об’єктивно спостерігається: шкіра суха, лущиться, помітні сліди від подряпин, пульс — 78/хв, АТ — 150/85 мм рт. ст. Глюкоза крові — 8,4 ммоль/л. Для якого захворювання характерні ці клініко- лабораторні симптоми?
+A.	Кропив’янки
+B.	Гіпертиреозу
+C.	Гіпотиреозу
+D.	Цукрового діабету *
+E.	Корости
+
+68.	До перинатального центру у відділення інтенсивної терапії шпиталізовано вагітну жінку (вагітність II, термін вагітності — 37 тижнів) зі скаргами на постійний головний біль, погіршення зору, мерехтіння «мушок» перед очима, блювання, гострий біль в епігастрії. Об’єктивно спостерігається: загальний стан тяжкий, генералізовані набряки, АТ — 170/110 мм рт. ст. У загальному аналізі сечі: протеїнурія — 3,5 г/добу. З анамнезу відомо, що підвищення АТ у жінки раніше не спостерігалося. Для якого патологічного стану характерні ці клініко-лабораторні показники?
+A.	Помірної прееклампсії
+B.	Тяжкої прееклампсії*
+C.	Хронічної серцевої недостатності
+D.	Гестаційної гіпертензії
+E.	Феохромоцитоми
+
+69.	Чоловік віком 54 роки скаржиться на зниження апетиту, біль у правому підребер’ї, нудоту, здуття живота, слабкість. Об’єктивно спостерігається: субіктеричність склер,
+«судинні зірочки» на шкірі, почервоніння долонь, на передній черевній стінці візуалізуються розширені підшкірні вени («голова медузи»), асцит. Для якого захворювання характерні ці клінічні прояви?
+A.	Хронічного гастриту
+B.	Жовчнокам’яної хвороби
+C.	Цирозу печінки*
+D.	Хронічного панкреатиту
+E.	Хронічного холециститу
+
+70.	У пацієнта після внутрішньовенного введення антибіотика розвинувся анафілактичний шок. Який препарат використовується насамперед для надання невідкладної допомоги пацієнту?
+A.	Нітрогліцерин
+B.	Фуросемід
+C.	Дротаверин
+D.	Епінефрин *
+E.	Кофеїн
+
+71.	У пацієнта розвинувся ангіоневротичний набряк. Лікарські засоби якої
+фармакологічної групи потрібно застосовувати для надання невідкладної допомоги пацієнту?
+A.	Антигістамінні*
+B.	Антациди
+C.	Анальгетики
+D.	Антибіотики
+E.	Антихолінестеразні
+
+72.	Пацієнту встановлено діагноз: гострий лейкоз та призначено медикаментозну
+терапію. Препарати якої групи порушують процеси росту, розвитку та механізми поділу всіх клітин організму, включаючи злоякісні?
+A.	Гепатопротектори
+B.	Антибіотики
+C.	Противірусні
+D.	Кардіопротектори
+E.	Цитостатики*
+
+73.	Під яким кутом потрібно ввести голку інсулінового шприца в підшкірно- жирову клітковину, якщо її довжина 10 мм?
+A.	40°
+B.	30°
+C.	90° *
+D.	45°
+E.	15°
+
+74.	У пацієнта, який хворіє на хронічний ниркову недостатність, розвинулася уремія. Який із нижченаведених симптомів свідчить про розвиток цієї патології?
+A.	Запах аміаку з рота*
+B.	Гіперемія шкірних покривів
+C.	Підвищення апетиту
+D.	Підвищення температури тіла
+E.	Збільшення лімфатичних вузлів
+
+75.	У жіночій консультації вагітній жінці проведено пельвіометрію. Який розмір жіночого таза враховується у діагностиці (визначенні ступеня звуження) анатомічно вузького таза?
+A.	Справжня кон’югата*
+B.	Міжостьова відстань
+C.	Міжгребенева відстань
+D.	Міжвертлюгова відстань
+E.	Зовнішня кон’югата
+
+76.	Укажіть ЕКГ-ознаки, що характерні для нападу стенокардії.
+A.	Високі зубці Р
+B.	Глибокий і широкий зубець Q
+C.	Дугоподібний сегмент ST над ізолінією
+D.	Високий, гострий зубець Т, сегмент SТ нижче ізолінії*
+E.	Низький вольтаж комплексу QRS
+
+77.	Сестрі медичній у приміщеннях для зберігання лікарських засобів потрібно стежити за певними параметрами та щоденно фіксувати отримані дані у відповідній документації. Укажіть ці параметри.
+A.	Температура та вологість повітря
+B.	Терміни придатності лікарських засобів*
+C.	Швидкість руху повітря та стерильність повітряного середовища
+D.	Яскравість природного та штучного освітлення
+E.	Справність сигналізації та камер відеоспостереження
+
+78.	Для діагностики якого захворювання використовується реакція Ваалера- Роуза?
+A.	Системної склеродермії
+B.	Системного червоного вовчака
+C.	Деформуючого остеоартрозу
+D.	Ревматоїдного артриту*
+E.	Дерматоміозиту
+
+79.	Пацієнт віком 14 років скаржиться на підвищення температури тіла до 37,6°С, пітливість, головний біль, загальну слабкість. В анамнезі: контакт із хворим на туберкульоз. У крові: лімфоцитоз, підвищення ШОЕ. Виявлено віраж туберкулінових проб. Який патологічний процес розвивається в організмі пацієнта?
+A.	Первинний туберкульозний комплекс
+B.	Первинна туберкульозна інтоксикація*
+C.	Міліарний туберкульоз
+D.	Гострий бронхіт
+E.	Туберкульоз внутрішньогрудних лімфатичних вузлів
+
+80.	Яка окружність талії в чоловіків асоціюється з високим ризиком розвитку артеріальної гіпертензії, хвороб серця, порушень вуглеводного обміну тощо?
+A.	88 см
+B.	75 см
+C.	102 см *
+D.	60 см
+E.	90 см
+
+81.	Укажіть місце перебування породіллі упродовж найближчих двох годин після завершення фізіологічних пологів.
+A.	У відділенні патології вагітних
+B.	У відділенні екстрагенітальної патології
+C.	У пологовій залі*
+D.	У гінекологічному відділенні
+E.	У післяпологовому відділенні
+
+82.	Пацієнту для лікування геморою призначено ректальне введення супозиторіїв із новокаїном. Укажіть особливості умов зберігання супозиторіїв.
+A.	За температури повітря не вище ніж 25°С*
+B.	В окремій шафі
+C.	У темному місці
+D.	У приміщенні з витяжною вентиляцією
+E.	У сухому темному місці
+
+83.	У пацієнта розвинулися симптоми гострого гастриту в результаті споживання неякісної їжі. Які заходи долікарської допомоги необхідно надати пацієнту насамперед?
+A.	Прикласти міхур із льодом на епігастральну ділянку
+B.	Промити шлунок*
+C.	Застосувати очисну клізму
+D.	Провести сліпе зондування
+E.	Прикласти грілку на епігастральну ділянку
+
+84.	Реабілітаційна програма для збереження функції уражених суглобів у пацієнтів із ревматоїдним артритом зазвичай включає різні методи лікування. Укажіть метод, що спрямований на поліпшення рухливості та функції суглобів.
+A.	Міостимуляція
+B.	Пневмопресинг
+C.	Вакуумний масаж
+D.	Вісцеральна терапія
+E.	Механотерапія*
+
+85.	Яка анатомічна ділянка тіла людини використовується для введення вакцини БЦЖ?
+A.	Підлопаткова ділянка
+B.	Верхній зовнішній квадрант сідниці
+C.	Передня поверхня стегна
+D.	Середня третина внутрішньої поверхні передпліччя
+E.	Зовнішня поверхня верхньої третини лівого плеча*
+
+86.	Пацієнт віком 18 років скаржиться на підвищення температури тіла до 38,2°С, набряк і почервоніння правої щоки. Об’єктивно спостерігається: у ділянці правої щоки визначається інфільтрат, болючий під час пальпації, шкіра над ним напружена, гіперемована, у центрі інфільтрату візуалізується стрижень у вигляді сіро-зелених мас. Який запальний процес розвинувся в пацієнта?
+A.	Фурункул *
+B.	Карбункул
+C.	Абсцес
+D.	Гідраденіт
+E.	Флегмона
+
+87.	Споживання продуктів зі збагаченим вмістом якого мікроелемента потрібно порекомендувати пацієнту, який хворіє на хронічну серцеву недостатність?
+A.	Кальцію
+B.	Натрію
+C.	Заліза
+D.	Калію*
+E.	Цинку
+
+88.	Як називається спосіб комунікації, що передбачає цілеспрямоване використання словесних висловлювань (мовлення) для передачі інформації?
+A.	Вербальна *
+B.	Офіційна
+C.	Невербальна
+D.	Дистанційна
+E.	Виховна
+
+89.	Для якого захворювання характерні такі клінічні прояви: гарячка, кашель (сухий, згодом вологий із виділенням слизово-гнійного мокротиння), посилення голосового тремтіння під час пальпації грудної клітки, задишка?
+A.	Бронхіальної астми
+B.	Гострого стенозуючого ларинготрахеїту
+C.	Пневмонії*
+D.	Спонтанного пневмотораксу
+E.	Гострого бронхіту
+
+90.	Який вид пов’язки використовується для фіксації кінцівки у разі перолому ключиці без зсуву уламків?
+A.	Дезо*
+B.	Циркулярна
+C.	Черепашача
+D.	Колосоподібна
+E.	Т-подібна
+
+91.	Яке ускладнення може розвинутися в пацієнта під час проведення абдомінальної пункції у разі швидкого видалення великого об’єму рідини?
+A.	Блювання
+B.	Ушкодження внутрішніх органів
+C.	Пневмоторакс
+D.	Шлункова кровотеча
+E.	Колапс*
+
+92.	Які лікарські засоби належать до списку «Б»?
+A.	Психотропні
+B.	Сильнодіючі *
+C.	Наркотичні
+D.	Отруйні
+E.	Імунобіологічні
+
+93.	Тяжкохворий пацієнт хоспісу перебуває на ліжковому режимі. З якою метою використовується шкала Braden під час догляду за пацієнтом?
+A.	Оцінювання ступеня виникнення ризику пролежнів*
+B.	Оцінки психоемоційного стану
+C.	Корекції психоемоційного стану
+D.	Розрахунку індексу маси тіла
+E.	Планування реабілітаційних заходів
+
+94.	Жінка перебуває на 30-му тижні вагітності. Вагітність II, багатоплідна (монохоріональна моноамніотична двійня). Стан матері та плодів задовільний.
+Враховуючи тип розвитку двійні, жінку попередили, що пологи відбуватимуться шляхом кесаревого розтину. У якому терміні вагітності його оптимально провести в цьому разі?
+A.	37 тижнів
+B.	38 тижнів
+C.	40 тижнів
+D.	36 тижнів
+E.	32 тижні*
+
+95.	У пацієнта віком 20 років захворювання розпочалося гостро, з підвищення
+температури тіла до 39,2°С, сильного головного болю та болю у м’язах. Через декілька годин на шкірі тулуба та задньої поверхні стегон з’явився геморагічний висип зірчастої форми. Які менінгеальні симптоми потрібно перевірити в пацієнта насамперед?
+A.	Кера, Ортнера
+B.	Керніга, Брудзинського*
+C.	Хвостека, Труссо
+D.	Пастернацького, Ровзінга
+E.	Бабінського, Россалімо
+
+96.	Укажіть метод ендоскопічного дослідження внутрішньої поверхні сечового міхура.
+A.	Цистоскопія*
+B.	Езофагогастродуоденоскопія
+C.	Ректороманоскопія
+D.	Бронхоскопія
+E.	Колоноскопія
+
+97.	Під час лабораторного дослідження мокротиння пацієнта виявлено спіралі Куршмана, кристали Шарко-Лейдена та еозинофіли. Для якого захворювання характерні такі лабораторні зміни в аналізі мокротиння?
+A.	Бронхоектатичної хвороби
+B.	Сухого плевриту
+C.	Туберкульозу легень
+D.	Гострого бронхіту
+E.	Бронхіальної астми*
+
+98.	Пацієнту, який хворіє на залізодефіцитну анемію, призначено терапію
+препаратами заліза. Одночасне приймання якого вітаміну покращує всмоктування та засвоєння заліза?
+A.	Ціанокобаламіну
+B.	Токоферолу
+C.	Аскорбінової кислоти*
+D.	Піридоксину
+E.	Кальциферолу
+
+99.	Як називається метод неінвазивного дослідження функції зовнішнього дихання, що проводиться для оцінки стану легень та бронхів, діагностики захворювань дихальної системи та контролю їх лікування?
+A.	Бронхоскопія
+B.	Спірографія*
+C.	Оглядова рентгенографія органів грудної клітки
+D.	УЗД легень
+E.	Шкірні алергологічні тести
+
+100.	Який суб’єктивний симптом найхарактерніший для кропив’янки?
+A.	Свербіж шкіри *
+B.	Мерзлякуватість
+C.	Іктеричність шкіри
+D.	Сльозотеча
+E.	Ціаноз шкіри
+
+101.	Пацієнтці віком 42 років встановлено діагноз: варикозна хвороба нижніх кінцівок. Укажіть найчастіше ускладнення цього захворювання.
+A.	Параліч
+B.	Системна склеродермія
+C.	Сепсис
+D.	Кардіосклероз
+E.	Тромбофлебіт*
+
+102.	Пацієнт віком 46 років скаржиться на різкий нападоподібний біль у поперековій ділянці з правого боку, що іррадіює в статеві органи та праве бедро, часте болюче сечовипускання, нудоту, блювання. В анамнезі: сечокам’яна хвороба. Об’єктивно спостерігається: пацієнт неспокійний, шкіра бліда, волога, температура тіла — 36,7°С,
+пульс — 92/хв, АТ— 100/60 мм рт. ст., симптом Пастернацького — позитивний праворуч. Які заходи долікарської допомоги необхідно надати пацієнту насамперед на догоспітальному етапі?
+A.	Провести катетеризацію сечового міхура
+B.	Застосувати газовідвідну трубку
+C.	Промити шлунок
+D.	Прикласти холодний компрес на поперекову ділянку
+E.	Прикласти грілку на поперекову ділянку *
+
+103.	Під час догляду та для допомоги пацієнту, у якого триває друга стадія гарячки (температура тіла — 39°С), сестра медична застосувала охолоджувальний компрес на лоб. Як часто його необхідно змінювати?
+A.	Раз на добу
+B.	Кожні 2-3 хв*
+C.	Через 1 год
+D.	За вимогою
+E.	Кожні 30 хв
+
+104.	Дорослому пацієнту проведено внутрішньошкірну пробу Манту. На 3-тю добу в місці ін’єкції з’явилася папула діаметром 7 мм. Інтерпретуйте результат проби.
+A.	Негативна
+B.	-
+C.	Гіперергічна
+D.	Сумнівна
+E.	Позитивна*
+
+105.	У чоловіка віком 28 років у ділянці верхньої губи візуалізуються гіперемія шкіри та дрібні міхурці з гнійним умістом, вкриті жовтими кірками, відмічається піднижньощелепний лімфаденіт. Для якої патології характерні вказані клінічні прояви?
+A.	Мікроспорії
+B.	Вітиліго
+C.	Псоріазу
+D.	Сикозу*
+E.	Бешихи
+
+106.	Чоловік віком 52 роки скаржиться на сильний оперізувальний біль у верхній половині живота, нудоту, блювання, рідкі випорожнення, здуття живота та слабкість, які виникли після вживання спиртних напоїв та жирної їжі. Об’єктивно спостерігається: блідість і сухість шкіри, пульс — 92/хв, ритмічний, АТ — 110/70 мм рт. ст. Яке додаткове дослідження доцільно провести пацієнту з метою уточнення діагнозу?
+A.	Аналіз крові на глюкозу
+B.	Аналіз крові на α-амілазу *
+C.	Загальний аналіз сечі
+D.	Аналіз калу на приховану кров
+E.	Дуоденальне зондування
+
+107.	Пацієнту з дихальною недостатністю призначено інгаляції кисню в об’ємі понад 5 л/хв. Які дії потрібно виконати для уникнення висушування слизової оболонки рота та дихальних шляхів?
+A.	Стежити за тиском
+B.	Підняти головний кінець ліжка
+C.	Регулювати редуктор
+D.	Зволожити кисень*
+E.	Обробити кисневий катетер олійним розчином
+
+108.	Який метод діагностики використовується для визначення прохідності вінцевих артерій?
+A.	Електроенцефалографія
+B.	Електрокардіографія
+C.	Коронарографія *
+D.	Пневмотахометрія
+E.	Ехокардіографія
+
+109.	Жінка віком 35 років перебуває на 39-му тижні вагітності. Вагітність І, передбачувана маса плода — 4200 г. Діагностовано тазове передлежання плода. Яка тактика ведення пологів у цьому разі?
+A.	Вакуум-екстракція плода
+B.	Накладання акушерських щипців
+C.	Пологи через природні пологові шляхи
+D.	Кесарів розтин*
+E.	–
+
+110.	У пацієнта на тлі перебігу гострого інфаркту міокарда у першу добу захворювання розвинулися такі симптоми: температура тіла — 37,6°С, підвищення рівня лейкоцитів, тропонінів, міоглобіну та С-реактивного протеїну у периферичній крові. Який синдром розвинувся в пацієнта?
+A.	Резорбтивно-некротичний*
+B.	Гіпертензивний
+C.	Сидеропенічний
+D.	Менінгеальний
+E.	Бронхообструктивний
+
+111.	Результати клінічного (загального) аналізу сечі пацієнта такі: сеча каламутна, з пластівцями та осадом, лейкоцитурія, бактеріурія, протеїнурія (менше 1 г/л). Для якого захворювання характерні такі лабораторні зміни в аналізі сечі пацієнта?
+A.	Гострого гломерулонефриту
+B.	Хронічної ниркової недостатності
+C.	Гострого пієлонефриту*
+D.	Сечокам’яної хвороби
+E.	Хронічного гломерулонефриту
+
+112.	Укажіть найнебезпечніше ускладнення, що може розвинутися в пацієнта під час блювання.
+A.	Відрижка повітрям
+B.	Аспірація шлункового вмісту *
+C.	Метеоризм
+D.	Печія
+E.	Відрижка шлунковим вмістом
+
+113.	У жінки віком 25 років після переохолодження з’явилися скарги на загальну слабкість, озноб, підвищення температури тіла до 38,5°С та тупий біль у поперековій
+ділянці з правого боку. Об’єктивно спостерігається: симптом Пастернацького позитивний праворуч, сеча каламутна, з гнійним осадом. Для якого захворювання характерні ці клінічні прояви?
+A.	Гострого пієлонефриту*
+B.	Сечокам’яної хвороби
+C.	Гострого циститу
+D.	Гострого гломерулонефриту
+E.	Амілоїдозу нирок
+
+114.	Сестра медична навчає пацієнта, якому діагностовано цукровий діабет 1- го типу, техніці введення інсуліну, зокрема наголошує на важливості дотримання точного дозування цього лікарського засобу. Яке ускладнення може розвинутися в пацієнта, якщо він отримуватиме недостатню дозу інсуліну?
+A.	Гіпоглікемія
+B.	Ліподистрофія
+C.	Медикаментозна емболія
+D.	Тромбофлебіт
+E.	Гіперглікемія*
+
+115.	За призначенням лікаря сестра медична проводить забір венозної крові пацієнта вакуумною системою. Які дії потрібно виконати із заповненою кров’ю пробіркою?
+A.	Акуратно перевернути її 5-8 разів для повного змішування вмісту*
+B.	Підігріти її вміст до температури 37°С
+C.	Перелити її вміст в іншу ємність
+D.	Енергійно струсити до повного змішування її вмісту
+E.	-
+
+116.	Який із нижченаведених фізіотерапевтичних засобів місцевого впливу можна використати для допомоги пацієнту, в якого триває друга стадія гарячки?
+A.	Медичні банки
+B.	Гірчичники
+C.	Зігрівальний компрес
+D.	Міхур із льодом*
+E.	Медичну грілку
+
+117.	Роділля, у якої триває другий період пологів, відчула різкий біль у ділянці дна матки. Об’єктивно спостерігається: шкіра бліда, AT — 90/60 мм рт. ст., пульс — 96/хв, матка в гіпертонусі, різко болюча, у ділянці її дна пальпується випинання. Положення плода поздовжнє, голівка розташована в порожнині малого таза, серцебиття плода — 180/хв, приглушене, аритмічне. Укажіть подальшу тактику ведення пологів.
+A.	Плодоруйнівна операція
+B.	Накладання акушерських щипців*
+C.	Спостереження за роділлею
+D.	Стимуляція пологової діяльності
+E.	Кесарів розтин
+
+118.	У чоловіка після вживання цитрусових з’явився висип на шкірі у вигляді червоних плям різних розмірів і форми, що супроводжується свербежем. Для якої патології характерні ці клінічні прояви?
+A.	Сироваткової хвороби
+B.	Псоріазу
+C.	Системного червоного вовчака
+D.	Кропив’янки *
+E.	Екземи
+
+119.	Пацієнтка віком 59 років скаржиться на слабкість у правій верхній та нижній кінцівках, утруднення мовлення, порушення зору. Об’єктивно спостерігається: AT — 190/90 мм рт. ст., пульс — 72/хв, ритмічний, гіпертонус м’язів правих кінцівок, моторна афазія. За декілька годин спостереження симптоматика регресувала. Для якої патології характерні вказані клінічні прояви?
+A.	Транзиторної ішемічної атаки*
+B.	-
+C.	Ішемічного інсульту
+D.	Геморагічного інсульту
+E.	Гіпертонічного церебрального кризу
+
+120.	У пацієнта, який хворіє на рак легень, раптово, під час кашлю розпочалося виділення пінистої яскраво-червоної крові з рота. Які заходи долікарської допомоги доцільно розпочати негайно?
+A.	Провести сліпе зондування
+B.	Дати вдихнути пари нашатирного спирту
+C.	Промити шлунок
+D.	Застосувати помірне охолодження грудної клітки*
+E.	Прикласти грілку на грудну клітку
+
+121.	Пацієнтка скаржиться на зміну гостроти зору, двоїння в очах, погіршення сну, пітливість, дратівливість, зменшення маси тіла за збереженого апетиту. Об’єктивно спостерігається: тремор рук і тіла, пульс — 110/хв, екзофтальм, збільшення розмірів щитоподібної залози. Попередній діагноз: дифузний токсичний зоб. Який із нижченаведених факторів посідає перше місце серед можливих причин розвитку цього захворювання?
+A.	Куріння
+B.	Переохолодження
+C.	Порушення дієти
+D.	Психотравма*
+E.	Шкідливі звички
+
+122.	Для якого захворювання нирок характерний такий симптомокомплекс: підвищення артеріального тиску, олігурія, набряки?
+A.	Гострої ниркової недостатності
+B.	Хронічної ниркової недостатності
+C.	Хронічного пієлонефриту
+D.	Сечокам’яної хвороби
+E.	Гострого гломерулонефриту*
+
+123.	У гастроентерологічному відділенні лікується пацієнт із діагнозом: виразкова хвороба шлунка. Які лікарські засоби пригнічують секрецію шлункового соку?
+A.	Антибактеріальні
+B.	Нестероїдні протизапальні
+C.	Антигістамінні
+D.	Антацидні
+E.	Інгібітори протонної помпи*
+
+124.	Бригада екстреної (швидкої) медичної допомоги транспортує пацієнта з
+підтвердженим діагнозом: туберкульоз — до спеціалізованого закладу охорони здоров’я. Який бар’єрний засіб захисту від можливого інфікування необхідно застосувати членам бригади?
+A.	Хірургічну маска
+B.	Хірургічні рукавички
+C.	Респіратор*
+D.	Захисний екран
+E.	Халат
+
+125.	У дівчини віком 19 років на шкірі грудної клітки, шиї, бічних поверхонь тулуба, міжлопаткової ділянки та плечей виявлено численні незапальні плями жовтувато- коричневого та блідо- рожевого кольору. Позитивні «симптом стружки» (лущення плям у разі пошкрябування) та йодна проба Бальцера. Для якого захворювання характерні ці клінічні прояви?
+A.	Висівкоподібного лишаю*
+B.	Токсикодермії
+C.	Мікроспорії
+D.	Контактного простого дерматиту
+E.	Справжньої екземи
+
+126.	Під час операції на неушкоджену шкіру сестри медичної, яка асистує лікарю, потрапила кров. Укажіть засіб, яким необхідно промити шкіру в цьому разі.
+A.	Водою з милом*
+B.	Етиловим спиртом
+C.	Дезінфікуючим розчином
+D.	Антисептиком
+E.	Фізіологічним розчином
+
+127.	Пацієнту, який хворіє на бронхоектатичну хворобу, призначено масаж грудної клітки та дихальну гімнастику. Укажіть мету проведення цих процедур.
+A.	Полегшення больових відчуттів
+B.	Загартовування організму
+C.	Профілактика набряку легень
+D.	Попередження кровохаркання
+E.	Полегшення процесу відходження мокротиння*
+
+128.	У пацієнта, який хворіє на дифузний токсичний зоб, спостерігається симптом
+«телеграфного стовпа». Укажіть клінічні прояви цього симптому.
+A.	Ністагм
+B.	Атактична хода
+C.	Девіація язика
+D.	Переміжна кульгавість
+E.	Тремор всього тіла*
+
+129.	Який із нижченаведених чинників сприяє розвитку виразкової хвороби?
+A.	Переохолодження
+B.	Алергени
+C.	Стрес*
+D.	Молодий вік
+E.	Ожиріння
+
+130.	Чоловіку віком 37 років для лікування пептичної виразки дванадцятипалої кишки призначено фамотидин. Яка основна фармакологічна дія цього лікарського засобу?
+A.	Антигістамінна
+B.	Спазмолітична
+C.	Антисекреторна*
+D.	Бактерицидна
+E.	Бактеріостатична
+
+131.	Пацієнту пульмонологічного відділення встановлено діагноз: пневмонія — та призначено оксигенотерапію через носові канюлі. Через який інтервал часу
+рекомендується перевіряти стан носових канюль для забезпечення впевненості у їхній прохідності та можливості надходження кисню, а також контролю швидкості подачі кисню і його концентрації?
+A.	Кожні 8 год*
+B.	Кожні 2 год
+C.	Кожні 3 год
+D.	Кожні 40 хв
+E.	Кожні 30 хв
+
+132.	Укажіть співвідношення денного діурезу до нічного в нормі.
+A.	1:1
+B.	1:4
+C.	-
+D.	1:3
+E.	3:1*
+
+133.	Пацієнт скаржиться на інтенсивний біль у першому плесно-фаланговому суглобі, що виник уночі. Об’єктивно спостерігається: уражений суглоб набряклий, гіперемований, гарячий на дотик, рухи в ньому обмежені. У крові виявлено високий рівень сечової кислоти. Для якого захворювання характерні ці клініко- лабораторні показники?
+A.	Подагри*
+B.	Первинного коксартрозу
+C.	Ревматоїдного артриту
+D.	Хвороби Рейно
+E.	Панарицію
+
+134.	Пацієнт скаржиться на інтенсивний біль і відчуття поколювання в руках, судоми в м’язах кистей. З анамнезу відомо, що пацієнт протягом 10-ти років працює забійником у шахті. Об’єктивно спостерігається: кисті ціанотичні, холодні на дотик, зниження больової чутливості за типом «рукавичок». Для якого захворювання характерні ці клінічні прояви?
+A.	Пневмоконіозу
+B.	Системної склеродермії
+C.	Вібраційної хвороби *
+D.	Ревматоїдного артриту
+E.	Цукрового діабету
+
+135.	Дорослому пацієнту встановлено діагноз: бронхіальна астма. Який шлях введення ліків має перевагу під час надання невідкладної допомоги пацієнту у разі нападу
+бронхіальної астми?
+A.	Ректальний
+B.	Інгаляційний*
+C.	Ентеральний
+D.	Ін’єкційний
+E.	Сублінгвальний
+
+136.	У пацієнта, який хворіє на хронічний ентерит, упродовж 5-ти діб спостерігаються часті рідкі випорожнення (до 15 разів на добу) світло-жовтого кольору зі шматочками неперетравленої їжі. Пацієнт скаржиться на загальну слабкість, головний біль, запаморочення, апатію, спрагу, значну втрату маси тіла. Який патологічний процес розвивається в організмі пацієнта?
+A.	Дефіцит заліза
+B.	Зневоднення (дегідратація) *
+C.	Гіпокальціємія
+D.	Гіпергідратація (затримка води)
+E.	Дефіцит вітаміну D
+
+137.	У якому віці згідно з Календарем профілактичних щеплень в Україні проводиться четверте щеплення проти кашлюку, дифтерії та правця дітям?
+A.	3 роки
+B.	18 місяців*
+C.	6 років
+D.	12 місяців
+E.	6 місяців
+
+138.	Укажіть інструментальний ендоскопічний метод дослідження прямої та сигмоподібної кишок.
+A.	Ректороманоскопія *
+B.	Фіброгастроскопія
+C.	Іригоскопія
+D.	Колоноскопія
+E.	Холангіографія
+
+139.	Для якого захворювання характерні такі клінічні прояви: гострий початок, слабко виражені катаральні явища, дрібний блідо-рожевий плямисто- папульозний висип, без тенденції до злиття, з переважною локалізацією на спині, сідницях та розгинальних поверхнях верхніх кінцівок, системне збільшення лімфатичних вузлів?
+A.	Краснухи *
+B.	Вітряної віспи
+C.	Скарлатини
+D.	Менінгококової інфекції
+E.	Кору
+
+140.	Пацієнту встановлено діагноз: пептична виразка шлунка. Який із нижченаведених лікарських засобів, що входить до складу квадритерапії цього захворювання, пригнічує продукцію кислоти шлункового соку, сприяє зменшенню больових відчуттів у шлунку та усуває печію?
+A.	Вісмуту субцитрат (де-нол)
+B.	—
+C.	Омепразол *
+D.	Амоксицилін
+E.	Кларитроміцин
+
+141.	Укажіть оптимальну температуру води для проведення очисної клізми пацієнту з атонічним закрепом.
+A.	37-38°C
+B.	18-20°С*
+C.	38-40°С
+D.	25-30°С
+E.	28-32°С
+
+142.	Який вид анестезії доцільно застосувати під час оперативного лікування підшкірного панарицію?
+A.	Інфільтраційну
+B.	За Оберстом-Лукашевичем*
+C.	За Вишневським
+D.	Внутрішньокісткову
+E.	Термінальну
+
+143.	Який розмір периферичного венозного катетера переважно використовується для внутрішньовенних інфузій у новонароджених дітей?
+A.	20G
+B.	26G*
+C.	18G
+D.	16G
+E.	14G
+
+144.	Чоловік скаржиться на періодичні закрепи, випорожнення з домішками крові та переймоподібний біль у животі. Об’єктивно спостерігається: шкіра бліда, живіт бере участь в акті дихання, м’який. У лівому підребер’ї пальпується щільне болюче
+утворення. Який інструментальний діагностичний метод використовується для дослідження всіх відділів товстого кишечника та взяття біопсії?
+A.	Ультразвукове дослідження органів черевної порожнини
+B.	Колоноскопія*
+C.	Ректороманоскопія
+D.	Оглядова рентгентгенографія органів черевної порожнини
+E.	Іригоскопія
+
+145.	У породіллі через тиждень після пологів підвищилася температура тіла до 39°С, з’явилися біль унизу живота, озноб, нудота, головний біль. Під час гінекологічного
+дослідження виявляються гнійні виділення з цервікального каналу, потовщення, набряки та біль у ділянці придатків матки. Яке захворювання розвинулося в жінки?
+A.	Сальпінгоофорит*
+B.	Ендометрит
+C.	Пельвіоперитоніт
+D.	Перитоніт
+E.	Лохіометра
+
+146.	Укажіть місце накладання електрода із зеленим маркуванням під час проведення електрокардіографії.
+A.	Права нога
+B.	Ліва нога*
+C.	Ліва рука
+D.	Права рука
+E.	-
+
+147.	Який із нижченаведених методів дослідження є найінформативнішим у діагностиці бронхоектатичної хвороби?
+A.	Бронхіальна артеріографія
+B.	Велоергометрія
+C.	Бронхографія*
+D.	Ларингоскопія
+E.	Спірометрія
+
+148.	Яке співвідношення розчинника та активної речовини антибіотика використовується у разі стандартного розведення антибіотика?
+A.	2 мл на 200 000 ОД
+B.	2 мл на 100 000 ОД
+C.	5 мл на 100 000 ОД
+D.	1 мл на 500 000 ОД
+E.	1 мл на 100 000 ОД*
+
+149.	Укажіть основний синдром, що характерний для перебігу початкового періоду скарлатини.
+A.	Інтоксикаційний*
+B.	Бронхообструктивний
+C.	Диспептичний
+D.	Геморагічний
+E.	Менінгеальний
+
+150.	Сестра медична проводить заміну та сортування постільної білизни тяжкохворого пацієнта. Класифікуйте ступінь забруднення текстильних виробів, якщо вони значно забруднені кров’ю та іншими біологічними виділеннями пацієнта?
+A.	III
+B.	II
+C.	IV*
+D.	-
+E.	І
+`;
+
+function normalizeRaw(s){
+  return s.replace(/\r/g,'')
+          .replace(/\u00A0/g,' ')
+          .replace(/[–—]/g,'-');
+}
+
+function parseBank(raw){
+  const s = normalizeRaw(raw).trim();
+  // Split by question numbers at line start: "12." etc
+  const parts = s.split(/\n(?=\d+\.\s)/g).map(x => x.trim()).filter(Boolean);
+
+  const questions = [];
+  for(const block of parts){
+    const m = block.match(/^(\d+)\.\s*([\s\S]*?)\nA\.\s*/);
+    if(!m) continue;
+
+    const num = Number(m[1]);
+    // We'll extract options by finding A..E markers
+    const optMarkers = [];
+    const re = /\n([A-E])\.\s/g;
+    let mm;
+    while((mm = re.exec(block)) !== null){
+      optMarkers.push({k:mm[1], i:mm.index + 1}); // +1 to skip the \n
+    }
+    // Some blocks may start options without leading \n for A. (rare); handle:
+    if(!block.includes("\nA.\t") && block.includes("A.")){
+      // ignore, our main split still works via \nA\.
     }
 
-    for(let i=0;i<lines.length;i++){
-      const line = lines[i];
-      if(!line.trim()) continue;
+    // Question text is from after "n." to before first "\nA."
+    const qText = block.replace(/^\d+\.\s*/,'').split(/\nA\.\s/)[0].trim();
 
-      const mQ = line.match(qStart);
-      if(mQ){
-        pushCur();
-        cur = { no: Number(mQ[1]), text: (mQ[2] || "").trim(), options:{}, correct:null };
-        inOptions = false;
-        continue;
-      }
+    // Parse options A..E by slicing between markers
+    const opts = [];
+    for(let idx=0; idx<optMarkers.length; idx++){
+      const start = optMarkers[idx].i;
+      const end = (idx+1<optMarkers.length) ? optMarkers[idx+1].i-1 : block.length;
+      const seg = block.slice(start, end).trim(); // starts with "A. ..."
+      const km = seg.match(/^([A-E])\.\s*([\s\S]*)$/);
+      if(!km) continue;
+      let text = km[2].trim();
 
-      if(!cur) continue;
-
-      const mO = line.match(optLine);
-      if(mO){
-        inOptions = true;
-        const letter = mO[1];
-        let txt = (mO[2] || "").trim();
-        // correct marker: any "*" anywhere in option line
-        const isCorrect = txt.includes("*");
-        txt = txt.replace(/\*/g, "").trim();
-        cur.options[letter] = txt;
-        if(isCorrect) cur.correct = letter;
-        continue;
-      }
-
-      // continuation lines:
-      if(!inOptions){
-        // continue question text
-        cur.text = (cur.text ? cur.text + "\n" : "") + line.trim();
-      }else{
-        // sometimes option text wraps to next line — append to last option
-        const letters = Object.keys(cur.options);
-        if(letters.length){
-          const last = letters[letters.length - 1];
-          cur.options[last] = (cur.options[last] + "\n" + line.trim()).trim();
-        }
-      }
+      // Correct marker: star anywhere near the end (common: " *" or "*")
+      const isCorrect = /\*/.test(text);
+      text = text.replace(/\*/g,'').trim();
+      opts.push({key: km[1], text, isCorrect});
     }
 
-    pushCur();
-    // sort by question number
-    out.sort((a,b)=>a.no-b.no);
-    return out;
-  }
-
-  function setPill(text){
-    els.statePill.textContent = text;
-  }
-
-  function shuffleArray(arr){
-    for(let i=arr.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-
-  function buildSession(){
-    const want = Math.max(1, Math.min(Number(els.count.value || 1), bank.length));
-    let list = bank.slice();
-    if(els.shuffle.checked) shuffleArray(list);
-    session = list.slice(0, want);
-    idx = 0;
-    answers = new Map();
-    finished = false;
-    els.review.style.display = "none";
-    els.review.innerHTML = "";
-  }
-
-  function startTimerIfNeeded(){
-    stopTimer();
-    if(!els.timerOn.checked) {
-      timer.on = false;
-      els.kpiTimer.textContent = "⏱️ —";
-      return;
-    }
-    const mins = Math.max(1, Number(els.minutes.value || 60));
-    timer.on = true;
-    timer.endAt = Date.now() + mins*60*1000;
-
-    timer.interval = setInterval(() => {
-      const left = timer.endAt - Date.now();
-      if(left <= 0){
-        els.kpiTimer.textContent = "⏱️ 00:00";
-        finish(true);
-        return;
-      }
-      const mm = String(Math.floor(left/60000)).padStart(2,"0");
-      const ss = String(Math.floor((left%60000)/1000)).padStart(2,"0");
-      els.kpiTimer.textContent = `⏱️ ${mm}:${ss}`;
-    }, 250);
-  }
-
-  function stopTimer(){
-    if(timer.interval) clearInterval(timer.interval);
-    timer.interval = null;
-  }
-
-  function render(){
-    if(!session.length){
-      els.qNo.textContent = "Імпортуй банк і натисни “Почати тест”.";
-      els.qText.textContent = "";
-      els.opts.innerHTML = "";
-      els.kpiPos.textContent = "—";
-      els.kpiScore.textContent = "—";
-      els.status.innerHTML = "";
-      els.bar.style.width = "0%";
-      return;
-    }
-
-    const q = session[idx];
-    els.qNo.textContent = `Питання ${idx+1} / ${session.length}  (№${q.no})`;
-    els.qText.textContent = q.text;
-
-    const chosen = answers.get(idx) || null;
-
-    // progress bar
-    els.bar.style.width = `${Math.round(((idx+1)/session.length)*100)}%`;
-
-    // options
-    els.opts.innerHTML = "";
-    const letters = ["A","B","C","D","E"].filter(L => q.options[L] !== undefined);
-
-    letters.forEach(L => {
-      const id = `opt_${idx}_${L}`;
-      const wrap = document.createElement("label");
-      wrap.className = "opt";
-      wrap.setAttribute("for", id);
-
-      const input = document.createElement("input");
-      input.type = "radio";
-      input.name = "opt";
-      input.id = id;
-      input.value = L;
-      input.checked = (chosen === L);
-      input.disabled = finished;
-
-      input.addEventListener("change", () => {
-        answers.set(idx, L);
-        renderStatus();
-        if(els.mode.value === "practice"){
-          // in practice mode, show correctness immediately after selection
-          renderStatus();
-        }
+    const correctIndex = opts.findIndex(o => o.isCorrect);
+    if(opts.length >= 2 && correctIndex !== -1){
+      questions.push({
+        id: num,
+        text: qText,
+        options: opts.map(o => ({key:o.key, text:o.text})),
+        correct: correctIndex
       });
-
-      const t = document.createElement("div");
-      t.className = "t";
-      t.textContent = `${L}. ${q.options[L]}`;
-
-      wrap.appendChild(input);
-      wrap.appendChild(t);
-      els.opts.appendChild(wrap);
-    });
-
-    renderStatus();
-  }
-
-  function calcScore(){
-    let correct = 0;
-    let answered = 0;
-    for(let i=0;i<session.length;i++){
-      const a = answers.get(i);
-      if(a){ answered++; if(a === session[i].correct) correct++; }
     }
-    return {correct, answered, total: session.length};
+  }
+  // sort by id just in case
+  questions.sort((a,b)=>a.id-b.id);
+  return questions;
+}
+
+// ------- App state -------
+const LS_KEY = "edki_nurse_variant1b_v1";
+
+let BANK = [];
+let TEST = [];
+let idx = 0;
+let mode = "practice";
+let showAnswers = false;
+let startedAt = null;
+let endsAt = null;
+let timerInt = null;
+
+// answers: { [testIndex]: optionIndex }
+let answers = {};
+let finished = false;
+
+const $ = (id)=>document.getElementById(id);
+
+function save(){
+  const payload = {
+    answers, idx, mode, showAnswers, startedAt, endsAt, finished,
+    testIds: TEST.map(q=>q.id)
+  };
+  localStorage.setItem(LS_KEY, JSON.stringify(payload));
+}
+
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return false;
+    const p = JSON.parse(raw);
+    answers = p.answers || {};
+    idx = p.idx || 0;
+    mode = p.mode || "practice";
+    showAnswers = !!p.showAnswers;
+    startedAt = p.startedAt || null;
+    endsAt = p.endsAt || null;
+    finished = !!p.finished;
+
+    // Rebuild TEST from saved ids if possible
+    const ids = p.testIds || [];
+    if(ids.length){
+      const map = new Map(BANK.map(q=>[q.id,q]));
+      const rebuilt = ids.map(id=>map.get(id)).filter(Boolean);
+      if(rebuilt.length){
+        TEST = rebuilt;
+      }
+    }
+    return true;
+  }catch(e){ return false; }
+}
+
+function shuffleArr(a){
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function fmtTime(ms){
+  if(ms <= 0) return "00:00";
+  const s = Math.floor(ms/1000);
+  const m = Math.floor(s/60);
+  const r = s%60;
+  return String(m).padStart(2,'0') + ":" + String(r).padStart(2,'0');
+}
+
+function computeStats(){
+  let answered = 0, correct = 0, wrong = 0;
+  for(let i=0;i<TEST.length;i++){
+    if(answers[i] === undefined) continue;
+    answered++;
+    if(answers[i] === TEST[i].correct) correct++;
+    else wrong++;
+  }
+  const score = TEST.length ? Math.round((correct/TEST.length)*100) : 0;
+  return {answered, correct, wrong, score};
+}
+
+function renderNav(){
+  const nav = $("nav");
+  nav.innerHTML = "";
+  const { } = computeStats();
+  for(let i=0;i<TEST.length;i++){
+    const b = document.createElement("button");
+    b.className = "nbtn";
+    b.textContent = (i+1);
+    const a = answers[i];
+    if(i === idx) b.classList.add("cur");
+    if(a !== undefined){
+      b.classList.add("ans");
+      if(showAnswers || mode==="practice" || finished){
+        if(a === TEST[i].correct) b.classList.add("ok");
+        else b.classList.add("bad");
+      }
+    }
+    b.onclick = ()=>{ idx=i; render(); save(); };
+    nav.appendChild(b);
+  }
+}
+
+function renderStats(){
+  const st = computeStats();
+  $("stAnswered").textContent = st.answered + " / " + TEST.length;
+  $("stCorrect").textContent = st.correct;
+  $("stWrong").textContent = st.wrong;
+  $("stScore").textContent = finished ? (st.score + "%") : "—";
+}
+
+function renderTimer(){
+  if(!endsAt){
+    $("timer").textContent = "⏱ —";
+    return;
+    }
+  const left = endsAt - Date.now();
+  $("timer").textContent = "⏱ " + fmtTime(left);
+  if(left <= 0 && !finished){
+    finishTest();
+  }
+}
+
+function render(){
+  $("mode").value = mode;
+  $("btnReveal").classList.toggle("hidden", mode !== "exam");
+  $("btnFinish").classList.toggle("hidden", !TEST.length);
+
+  if(!TEST.length){
+    $("qtext").textContent = "Натисни “Почати”, щоб завантажити питання.";
+    $("opts").innerHTML = "";
+    $("progress").textContent = "—";
+    $("hint").textContent = "";
+    renderNav();
+    renderStats();
+    renderTimer();
+    return;
   }
 
-  function renderStatus(){
-    const {correct, answered, total} = calcScore();
-    els.kpiPos.textContent = `📌 ${idx+1}/${total}`;
-    els.kpiScore.textContent = `✅ ${correct} / ${total}  •  ✍️ ${answered}`;
+  const q = TEST[idx];
+  $("progress").textContent = `Питання ${idx+1} / ${TEST.length} (ID: ${q.id})`;
 
-    const q = session[idx];
-    const a = answers.get(idx);
+  $("qtext").textContent = q.text;
 
-    els.status.innerHTML = "";
-    const tags = [];
+  const chosen = answers[idx];
 
-    // answered status
-    if(!a) tags.push(tag("Не відповіли", "warn"));
-    else tags.push(tag(`Відповідь: ${a}`, "good"));
+  const canReveal = (mode==="practice") || showAnswers || finished;
 
-    // correctness depending on mode/finished
-    if(els.mode.value === "practice" && a){
-      if(a === q.correct) tags.push(tag("Правильно", "good"));
-      else tags.push(tag(`Неправильно • Правильна: ${q.correct || "?"}`, "bad"));
-    }else if(finished && a){
-      if(a === q.correct) tags.push(tag("Правильно", "good"));
-      else tags.push(tag(`Неправильно • Правильна: ${q.correct || "?"}`, "bad"));
-    }else if(finished && !a){
-      tags.push(tag(`Правильна: ${q.correct || "?"}`, "bad"));
+  const opts = $("opts");
+  opts.innerHTML = "";
+  q.options.forEach((o, oi)=>{
+    const div = document.createElement("div");
+    div.className = "opt";
+    if(chosen === oi) div.classList.add("sel");
+
+    if(chosen !== undefined && canReveal){
+      if(oi === q.correct) div.classList.add("good");
+      if(chosen === oi && chosen !== q.correct) div.classList.add("bad");
     }
 
-    tags.forEach(t => els.status.appendChild(t));
-  }
-
-  function tag(text, kind){
-    const s = document.createElement("span");
-    s.className = `tag ${kind||""}`;
-    s.textContent = text;
-    return s;
-  }
-
-  function finish(fromTimer=false){
-    if(finished) return;
-    finished = true;
-    stopTimer();
-
-    const {correct, answered, total} = calcScore();
-    const percent = total ? Math.round((correct/total)*100) : 0;
-
-    setPill(`Завершено • ${correct}/${total} (${percent}%)`);
-    els.kpiScore.textContent = `✅ ${correct}/${total} (${percent}%) • ✍️ ${answered}`;
-    if(fromTimer) {
-      els.status.appendChild(tag("Час вийшов", "bad"));
-    }
-    render(); // disables inputs
-
-    buildReview();
-    els.review.style.display = "block";
-  }
-
-  function buildReview(){
-    const {correct, total} = calcScore();
-    const percent = total ? Math.round((correct/total)*100) : 0;
-
-    const box = document.createElement("div");
-    box.innerHTML = `
-      <div class="small" style="margin-bottom:10px">
-        <b>Огляд спроби:</b> <span class="mono">${correct}/${total} (${percent}%)</span>.
-        Натисни на “Перейти до №”, щоб швидко відкрити питання.
-      </div>
-    `;
-    const frag = document.createDocumentFragment();
-    frag.appendChild(box);
-
-    session.forEach((q, i) => {
-      const a = answers.get(i) || "—";
-      const ok = (a !== "—" && a === q.correct);
-
-      const item = document.createElement("div");
-      item.className = "item";
-      item.innerHTML = `
-        <div class="hdr">
-          <div class="left">
-            <span class="tag ${ok ? "good":"bad"}">${ok ? "OK":"NO"}</span>
-            <span class="small">Питання ${i+1} (№${q.no})</span>
-          </div>
-          <div class="small mono">Твоя: ${a} • Правильна: ${q.correct || "?"}</div>
-        </div>
-        <div class="small" style="white-space:pre-wrap">${escapeHtml(q.text)}</div>
-      `;
-      item.addEventListener("click", () => { idx = i; render(); window.scrollTo({top:0, behavior:"smooth"}); });
-      frag.appendChild(item);
-    });
-
-    els.review.innerHTML = "";
-    els.review.appendChild(frag);
-  }
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, (m) => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-    }[m]));
-  }
-
-  // UI actions
-  els.btnImport.addEventListener("click", () => {
-    const parsed = parseQuestions(els.raw.value || "");
-    bank = parsed;
-
-    // stats
-    const missingCorrect = bank.filter(q => !q.correct).map(q => q.no);
-    const withStar = bank.filter(q => q.correct).length;
-
-    if(!bank.length){
-      setPill("Помилка імпорту");
-      els.importStats.innerHTML = `<span class="danger">Не знайшов питань.</span> Перевір формат.`;
+    div.onclick = ()=>{
+      if(finished) return;
+      answers[idx] = oi;
+      if(mode==="practice") showAnswers = true; // practice reveals instantly
       render();
-      return;
+      save();
+    };
+
+    const k = document.createElement("div");
+    k.className = "k";
+    k.textContent = o.key;
+
+    const t = document.createElement("div");
+    t.className = "t";
+    t.textContent = o.text;
+
+    div.appendChild(k);
+    div.appendChild(t);
+    opts.appendChild(div);
+  });
+
+  // Hint text
+  const hint = $("hint");
+  if(chosen === undefined){
+    hint.textContent = mode==="exam"
+      ? "Exam: відповідь збережеться, але правильність не показується до завершення."
+      : "Practice: обери відповідь — і відразу побачиш результат.";
+  }else{
+    if(canReveal){
+      hint.textContent = (chosen === q.correct)
+        ? "✅ Правильно."
+        : `❌ Неправильно. Правильна відповідь: ${q.options[q.correct].key}.`;
+    }else{
+      hint.textContent = "Відповідь збережено. Правильність буде показано після завершення або “Показати правильну”.";
     }
+  }
 
-    setPill(`Банк: ${bank.length} питань`);
-    els.importStats.innerHTML =
-      `Завантажено: <span class="mono">${bank.length}</span> питань • ` +
-      `з ключем: <span class="mono">${withStar}</span>` +
-      (missingCorrect.length ? ` • без відповіді: <span class="mono">${missingCorrect.slice(0,30).join(", ")}${missingCorrect.length>30?"…":""}</span>` : "");
+  $("prev").disabled = idx===0;
+  $("next").disabled = idx===TEST.length-1;
 
-    // clamp count
-    els.count.value = Math.min(Number(els.count.value||50), bank.length);
-    render();
-  });
+  renderNav();
+  renderStats();
+  renderTimer();
+}
 
-  els.btnStart.addEventListener("click", () => {
-    if(!bank.length){
-      setPill("Спочатку імпорт");
-      els.importStats.innerHTML = `<span class="danger">Спочатку натисни “Імпортувати банк”.</span>`;
-      return;
-    }
-    buildSession();
-    setPill(`Сесія: ${session.length} питань • ${els.mode.value}`);
-    startTimerIfNeeded();
-    render();
-  });
+function startTest(){
+  mode = $("mode").value;
+  const count = Number($("count").value);
+  const doShuffle = $("shuffle").value === "yes";
+  const mins = Math.max(5, Math.min(240, Number($("minutes").value) || 90));
 
-  els.btnReset.addEventListener("click", () => {
-    stopTimer();
-    bank = [];
-    session = [];
-    idx = 0;
-    answers = new Map();
-    finished = false;
-    setPill("Банк не завантажено");
-    els.importStats.textContent = "";
-    els.kpiTimer.textContent = "⏱️ —";
-    els.review.style.display = "none";
-    els.review.innerHTML = "";
-    render();
-  });
+  // Build TEST
+  const pool = BANK.slice();
+  if(doShuffle) shuffleArr(pool);
+  TEST = pool.slice(0, Math.min(count, pool.length));
 
-  els.btnPrev.addEventListener("click", () => {
-    if(!session.length) return;
-    idx = Math.max(0, idx-1);
-    render();
-  });
+  // Reset state
+  idx = 0;
+  answers = {};
+  finished = false;
+  showAnswers = (mode==="practice");
+  startedAt = Date.now();
+  endsAt = Date.now() + mins*60*1000;
 
-  els.btnNext.addEventListener("click", () => {
-    if(!session.length) return;
-    idx = Math.min(session.length-1, idx+1);
-    render();
-  });
+  // Timer
+  if(timerInt) clearInterval(timerInt);
+  timerInt = setInterval(renderTimer, 250);
 
-  els.btnFinish.addEventListener("click", () => {
-    if(!session.length) return;
-    finish(false);
-  });
-
-  els.btnReviewToggle.addEventListener("click", () => {
-    if(!session.length) return;
-    if(!finished){
-      // дозволимо показати огляд навіть до завершення (але без оцінки в exam)
-      buildReview();
-      els.review.style.display = (els.review.style.display === "none") ? "block" : "none";
-      return;
-    }
-    els.review.style.display = (els.review.style.display === "none") ? "block" : "none";
-  });
-
-  els.btnJump.addEventListener("click", () => {
-    if(!session.length) return;
-    const x = prompt(`Перейти до питання (1–${session.length}):`);
-    if(!x) return;
-    const n = Number(x);
-    if(!Number.isFinite(n) || n<1 || n>session.length) return;
-    idx = n-1;
-    render();
-  });
-
-  // keyboard nav
-  window.addEventListener("keydown", (e) => {
-    if(!session.length) return;
-    if(e.key === "ArrowLeft") { idx = Math.max(0, idx-1); render(); }
-    if(e.key === "ArrowRight") { idx = Math.min(session.length-1, idx+1); render(); }
-  });
-
-  // initial render
+  save();
   render();
+}
+
+function finishTest(){
+  finished = true;
+  showAnswers = true;
+  if(timerInt) clearInterval(timerInt);
+  timerInt = null;
+  save();
+  render();
+}
+
+function clearAnswer(){
+  if(finished) return;
+  delete answers[idx];
+  save();
+  render();
+}
+
+function resetProgress(){
+  localStorage.removeItem(LS_KEY);
+  // Keep the bank; just reset test session
+  TEST = [];
+  idx = 0;
+  answers = {};
+  finished = false;
+  showAnswers = false;
+  startedAt = null;
+  endsAt = null;
+  if(timerInt) clearInterval(timerInt);
+  timerInt = null;
+  render();
+}
+
+function boot(){
+  BANK = parseBank(DATA_RAW);
+
+  $("bankStatus").textContent = "База: готово";
+  $("bankMeta").textContent = `питань: ${BANK.length}`;
+
+  // Wire events
+  $("btnStart").onclick = startTest;
+  $("btnFinish").onclick = finishTest;
+  $("prev").onclick = ()=>{ if(idx>0){ idx--; render(); save(); } };
+  $("next").onclick = ()=>{ if(idx<TEST.length-1){ idx++; render(); save(); } };
+  $("btnReveal").onclick = ()=>{ if(mode==="exam"){ showAnswers = true; render(); save(); } };
+  $("btnClear").onclick = clearAnswer;
+  $("btnReset").onclick = resetProgress;
+
+  $("mode").onchange = ()=>{
+    mode = $("mode").value;
+    // do not auto-restart; just change behavior
+    if(mode==="practice") showAnswers = true;
+    render();
+    save();
+  };
+
+  // Try to restore session
+  const restored = load();
+  if(restored && TEST.length){
+    // Restart timer
+    if(endsAt && !finished){
+      if(timerInt) clearInterval(timerInt);
+      timerInt = setInterval(renderTimer, 250);
+    }
+  }
+
+  // If nothing restored — just render idle state
+  render();
+}
+
+boot();
 </script>
 </body>
 </html>

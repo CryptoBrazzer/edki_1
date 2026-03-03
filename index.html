@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ЄДКІ — Тест (імпорт з тексту)</title>
+  <style>
+    :root{
+      --bg:#071427;
+      --panel:#0b1d36;
+      --panel2:#0a1730;
+      --text:#e9f1ff;
+      --muted:#a9bddc;
+      --line:rgba(255,255,255,.10);
+      --good:#2ad67a;
+      --bad:#ff5a6a;
+      --warn:#ffd166;
+      --btn:#13345f;
+      --btn2:#0f2a4e;
+      --shadow: 0 16px 50px rgba(0,0,0,.35);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(68,140,255,.20), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(0,255,200,.10), transparent 60%),
+        radial-gradient(900px 600px at 30% 110%, rgba(255,180,0,.10), transparent 60%),
+        linear-gradient(180deg, #040b16, var(--bg));
+      min-height:100vh;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:28px 18px 50px}
+    header{
+      display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
+      padding:18px 18px 10px;border:1px solid var(--line);background:rgba(11,29,54,.65);
+      border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter: blur(10px);
+    }
+    .title{
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .title h1{margin:0;font-size:18px;letter-spacing:.3px}
+    .title .sub{color:var(--muted);font-size:13px}
+    .pill{
+      display:inline-flex;gap:10px;align-items:center;
+      border:1px solid var(--line);background:rgba(10,23,48,.8);
+      padding:10px 12px;border-radius:999px;color:var(--muted);font-size:12px
+    }
+    .grid{display:grid;grid-template-columns: 1.1fr .9fr;gap:16px;margin-top:16px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+    .card{
+      border:1px solid var(--line);
+      background:rgba(11,29,54,.6);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+    .card .hd{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(19,52,95,.35), rgba(10,23,48,.0));
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
+    .card .hd h2{margin:0;font-size:14px;color:var(--text);letter-spacing:.2px}
+    .card .bd{padding:16px}
+    textarea{
+      width:100%;min-height:260px;resize:vertical;
+      background:rgba(7,20,39,.55);
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 12px;
+      outline:none;
+      font-family: var(--mono);
+      font-size:12px;
+      line-height:1.35;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    label{font-size:12px;color:var(--muted)}
+    select,input[type="number"]{
+      background:rgba(7,20,39,.55);
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:9px 10px;
+      outline:none;
+      font-size:13px;
+    }
+    input[type="checkbox"]{transform: translateY(1px)}
+    .btn{
+      appearance:none;border:none;cursor:pointer;
+      background:linear-gradient(180deg, rgba(23,70,125,.95), rgba(15,42,78,.95));
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.12);
+      padding:10px 12px;border-radius:14px;
+      font-weight:600;font-size:13px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.28);
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.secondary{
+      background:linear-gradient(180deg, rgba(19,52,95,.70), rgba(10,23,48,.85));
+      color:var(--muted);
+    }
+    .btn.ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,.14);
+      color:var(--muted);
+      box-shadow:none;
+    }
+    .hint{color:var(--muted);font-size:12px;line-height:1.4;margin-top:10px}
+    .quizTop{
+      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+      margin-bottom:12px
+    }
+    .meter{
+      flex:1;min-width:220px;
+      height:10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(7,20,39,.45);overflow:hidden;
+    }
+    .bar{height:100%;width:0;background:linear-gradient(90deg, rgba(68,140,255,.85), rgba(42,214,122,.85))}
+    .kpis{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .kpi{border:1px solid var(--line);border-radius:999px;padding:8px 10px;background:rgba(10,23,48,.65);color:var(--muted);font-size:12px}
+    .q{
+      padding:14px 14px 10px;border:1px solid var(--line);border-radius:16px;
+      background:rgba(7,20,39,.40);
+    }
+    .q .qno{color:var(--muted);font-size:12px;margin-bottom:8px}
+    .q .qtext{white-space:pre-wrap;font-size:15px;line-height:1.35}
+    .opts{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .opt{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:10px 10px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(10,23,48,.45);
+      cursor:pointer;
+    }
+    .opt:hover{border-color:rgba(255,255,255,.22)}
+    .opt input{margin-top:3px}
+    .opt .t{white-space:pre-wrap;font-size:14px;line-height:1.25}
+    .foot{
+      display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:12px
+    }
+    .status{
+      font-size:12px;color:var(--muted);
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    }
+    .tag{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(10,23,48,.65);color:var(--muted)}
+    .tag.good{color:rgba(42,214,122,.95);border-color:rgba(42,214,122,.25)}
+    .tag.bad{color:rgba(255,90,106,.95);border-color:rgba(255,90,106,.25)}
+    .tag.warn{color:rgba(255,209,102,.95);border-color:rgba(255,209,102,.25)}
+    .review{
+      margin-top:12px;
+      border-top:1px solid var(--line);
+      padding-top:12px;
+      display:none;
+    }
+    .review .item{
+      border:1px solid var(--line);
+      background:rgba(7,20,39,.35);
+      border-radius:16px;
+      padding:12px;
+      margin-bottom:10px;
+    }
+    .review .item .hdr{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px}
+    .review .item .hdr .left{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .small{font-size:12px;color:var(--muted)}
+    .mono{font-family:var(--mono)}
+    .danger{color:rgba(255,90,106,.95)}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="title">
+      <h1>ЄДКІ — Тест (HTML, імпорт з тексту)</h1>
+      <div class="sub">Працює офлайн. Парсить питання з твого тексту формату “1.” + варіанти “A.–E.” + “*” біля правильної.</div>
+    </div>
+    <div class="pill">
+      <span class="mono">v1</span>
+      <span>•</span>
+      <span id="statePill">Банк не завантажено</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- IMPORT -->
+    <section class="card">
+      <div class="hd">
+        <h2>1) Встав текст тесту → Імпортуй</h2>
+        <div class="row">
+          <button class="btn secondary" id="btnPasteHint" type="button">Формат</button>
+          <button class="btn" id="btnImport" type="button">Імпортувати банк</button>
+        </div>
+      </div>
+      <div class="bd">
+        <textarea id="raw">
+1.	Приклад питання…
+A.	Варіант 1
+B.	Варіант 2 *
+C.	Варіант 3
+D.	Варіант 4
+E.	Варіант 5
+
+2.	Ще приклад…
+A.	…
+B.	… *
+C.	…
+D.	…
+E.	…
+        </textarea>
+
+        <div class="hint" id="formatHint" style="display:none">
+          <div class="small">
+            <b>Очікуваний формат</b> (як у твоєму документі):<br/>
+            • Номер: <span class="mono">123.</span> або <span class="mono">123)</span><br/>
+            • Варіанти: <span class="mono">A.</span> … <span class="mono">E.</span><br/>
+            • Правильна відповідь позначена зірочкою <span class="mono">*</span> у кінці рядка варіанта<br/>
+            • Можна кілька рядків у питанні — парсер збере їх докупи.
+          </div>
+          <div class="small" style="margin-top:8px">
+            Якщо в якомусь питанні зірочки немає — нижче є <span class="mono">answerKeyFallback</span> (я вже додав туди №29 → C).
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <div class="row">
+            <label>Режим</label>
+            <select id="mode">
+              <option value="practice">Practice (показувати відповідь одразу)</option>
+              <option value="exam">Exam (перевірка в кінці)</option>
+            </select>
+          </div>
+          <div class="row">
+            <label>К-сть питань</label>
+            <input type="number" id="count" min="1" value="50" />
+          </div>
+          <div class="row">
+            <label><input type="checkbox" id="shuffle" checked /> Перемішати</label>
+          </div>
+          <div class="row">
+            <label><input type="checkbox" id="timerOn" /> Таймер</label>
+            <input type="number" id="minutes" min="1" value="60" />
+            <label>хв</label>
+          </div>
+          <div style="flex:1"></div>
+          <button class="btn" id="btnStart" type="button">Почати тест</button>
+          <button class="btn ghost" id="btnReset" type="button">Скинути</button>
+        </div>
+
+        <div class="hint" id="importStats"></div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="card">
+      <div class="hd">
+        <h2>2) Проходження</h2>
+        <div class="row">
+          <button class="btn secondary" id="btnPrev" type="button">← Назад</button>
+          <button class="btn secondary" id="btnNext" type="button">Далі →</button>
+          <button class="btn" id="btnFinish" type="button">Завершити</button>
+        </div>
+      </div>
+      <div class="bd">
+        <div class="quizTop">
+          <div class="meter" aria-label="progress"><div class="bar" id="bar"></div></div>
+          <div class="kpis">
+            <div class="kpi" id="kpiPos">—</div>
+            <div class="kpi" id="kpiScore">—</div>
+            <div class="kpi" id="kpiTimer">—</div>
+          </div>
+        </div>
+
+        <div class="q" id="qBox">
+          <div class="qno" id="qNo">Імпортуй банк і натисни “Почати тест”.</div>
+          <div class="qtext" id="qText"></div>
+          <div class="opts" id="opts"></div>
+        </div>
+
+        <div class="foot">
+          <div class="status" id="status"></div>
+          <div class="row">
+            <button class="btn ghost" id="btnJump" type="button">Перейти до №</button>
+            <button class="btn ghost" id="btnReviewToggle" type="button">Огляд</button>
+          </div>
+        </div>
+
+        <div class="review" id="review"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // Якщо в деяких питаннях у джерелі немає "*", можна підстрахуватися тут:
+  // Формат: номер_питання : "A"|"B"|"C"|"D"|"E"
+  const answerKeyFallback = {
+    29: "C", // у твоєму тексті №29 без "*" (правильне: "метелик" — варіант C)
+  };
+
+  const els = {
+    statePill: document.getElementById("statePill"),
+    raw: document.getElementById("raw"),
+    btnImport: document.getElementById("btnImport"),
+    btnStart: document.getElementById("btnStart"),
+    btnReset: document.getElementById("btnReset"),
+    btnPrev: document.getElementById("btnPrev"),
+    btnNext: document.getElementById("btnNext"),
+    btnFinish: document.getElementById("btnFinish"),
+    btnReviewToggle: document.getElementById("btnReviewToggle"),
+    btnJump: document.getElementById("btnJump"),
+    mode: document.getElementById("mode"),
+    count: document.getElementById("count"),
+    shuffle: document.getElementById("shuffle"),
+    timerOn: document.getElementById("timerOn"),
+    minutes: document.getElementById("minutes"),
+    importStats: document.getElementById("importStats"),
+    bar: document.getElementById("bar"),
+    kpiPos: document.getElementById("kpiPos"),
+    kpiScore: document.getElementById("kpiScore"),
+    kpiTimer: document.getElementById("kpiTimer"),
+    qNo: document.getElementById("qNo"),
+    qText: document.getElementById("qText"),
+    opts: document.getElementById("opts"),
+    status: document.getElementById("status"),
+    review: document.getElementById("review"),
+    btnPasteHint: document.getElementById("btnPasteHint"),
+    formatHint: document.getElementById("formatHint"),
+  };
+
+  let bank = [];        // всі питання
+  let session = [];     // питання в поточній спробі
+  let idx = 0;
+  let answers = new Map();  // sessionIndex -> "A"..."E"
+  let finished = false;
+
+  let timer = {
+    on:false, endAt:0, interval:null
+  };
+
+  els.btnPasteHint.addEventListener("click", () => {
+    els.formatHint.style.display = (els.formatHint.style.display === "none") ? "block" : "none";
+  });
+
+  function normalizeLine(s){
+    return (s || "")
+      .replace(/\u00A0/g, " ")
+      .replace(/\t/g, " ")
+      .trimEnd();
+  }
+
+  function parseQuestions(rawText){
+    const lines = rawText.split(/\r?\n/).map(normalizeLine);
+
+    const qStart = /^\s*(\d+)\s*[.)]\s*(.*)$/;
+    const optLine = /^\s*([A-E])\s*[.)]\s*(.*)$/;
+
+    const out = [];
+    let cur = null;
+    let inOptions = false;
+
+    function pushCur(){
+      if(!cur) return;
+      // fallback correct
+      if(!cur.correct && answerKeyFallback[cur.no]) cur.correct = answerKeyFallback[cur.no];
+      // sanity: only push if has stem + >=2 opts
+      const optCount = Object.keys(cur.options || {}).length;
+      if(cur.text.trim() && optCount >= 2){
+        out.push(cur);
+      }
+      cur = null;
+      inOptions = false;
+    }
+
+    for(let i=0;i<lines.length;i++){
+      const line = lines[i];
+      if(!line.trim()) continue;
+
+      const mQ = line.match(qStart);
+      if(mQ){
+        pushCur();
+        cur = { no: Number(mQ[1]), text: (mQ[2] || "").trim(), options:{}, correct:null };
+        inOptions = false;
+        continue;
+      }
+
+      if(!cur) continue;
+
+      const mO = line.match(optLine);
+      if(mO){
+        inOptions = true;
+        const letter = mO[1];
+        let txt = (mO[2] || "").trim();
+        // correct marker: any "*" anywhere in option line
+        const isCorrect = txt.includes("*");
+        txt = txt.replace(/\*/g, "").trim();
+        cur.options[letter] = txt;
+        if(isCorrect) cur.correct = letter;
+        continue;
+      }
+
+      // continuation lines:
+      if(!inOptions){
+        // continue question text
+        cur.text = (cur.text ? cur.text + "\n" : "") + line.trim();
+      }else{
+        // sometimes option text wraps to next line — append to last option
+        const letters = Object.keys(cur.options);
+        if(letters.length){
+          const last = letters[letters.length - 1];
+          cur.options[last] = (cur.options[last] + "\n" + line.trim()).trim();
+        }
+      }
+    }
+
+    pushCur();
+    // sort by question number
+    out.sort((a,b)=>a.no-b.no);
+    return out;
+  }
+
+  function setPill(text){
+    els.statePill.textContent = text;
+  }
+
+  function shuffleArray(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function buildSession(){
+    const want = Math.max(1, Math.min(Number(els.count.value || 1), bank.length));
+    let list = bank.slice();
+    if(els.shuffle.checked) shuffleArray(list);
+    session = list.slice(0, want);
+    idx = 0;
+    answers = new Map();
+    finished = false;
+    els.review.style.display = "none";
+    els.review.innerHTML = "";
+  }
+
+  function startTimerIfNeeded(){
+    stopTimer();
+    if(!els.timerOn.checked) {
+      timer.on = false;
+      els.kpiTimer.textContent = "⏱️ —";
+      return;
+    }
+    const mins = Math.max(1, Number(els.minutes.value || 60));
+    timer.on = true;
+    timer.endAt = Date.now() + mins*60*1000;
+
+    timer.interval = setInterval(() => {
+      const left = timer.endAt - Date.now();
+      if(left <= 0){
+        els.kpiTimer.textContent = "⏱️ 00:00";
+        finish(true);
+        return;
+      }
+      const mm = String(Math.floor(left/60000)).padStart(2,"0");
+      const ss = String(Math.floor((left%60000)/1000)).padStart(2,"0");
+      els.kpiTimer.textContent = `⏱️ ${mm}:${ss}`;
+    }, 250);
+  }
+
+  function stopTimer(){
+    if(timer.interval) clearInterval(timer.interval);
+    timer.interval = null;
+  }
+
+  function render(){
+    if(!session.length){
+      els.qNo.textContent = "Імпортуй банк і натисни “Почати тест”.";
+      els.qText.textContent = "";
+      els.opts.innerHTML = "";
+      els.kpiPos.textContent = "—";
+      els.kpiScore.textContent = "—";
+      els.status.innerHTML = "";
+      els.bar.style.width = "0%";
+      return;
+    }
+
+    const q = session[idx];
+    els.qNo.textContent = `Питання ${idx+1} / ${session.length}  (№${q.no})`;
+    els.qText.textContent = q.text;
+
+    const chosen = answers.get(idx) || null;
+
+    // progress bar
+    els.bar.style.width = `${Math.round(((idx+1)/session.length)*100)}%`;
+
+    // options
+    els.opts.innerHTML = "";
+    const letters = ["A","B","C","D","E"].filter(L => q.options[L] !== undefined);
+
+    letters.forEach(L => {
+      const id = `opt_${idx}_${L}`;
+      const wrap = document.createElement("label");
+      wrap.className = "opt";
+      wrap.setAttribute("for", id);
+
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "opt";
+      input.id = id;
+      input.value = L;
+      input.checked = (chosen === L);
+      input.disabled = finished;
+
+      input.addEventListener("change", () => {
+        answers.set(idx, L);
+        renderStatus();
+        if(els.mode.value === "practice"){
+          // in practice mode, show correctness immediately after selection
+          renderStatus();
+        }
+      });
+
+      const t = document.createElement("div");
+      t.className = "t";
+      t.textContent = `${L}. ${q.options[L]}`;
+
+      wrap.appendChild(input);
+      wrap.appendChild(t);
+      els.opts.appendChild(wrap);
+    });
+
+    renderStatus();
+  }
+
+  function calcScore(){
+    let correct = 0;
+    let answered = 0;
+    for(let i=0;i<session.length;i++){
+      const a = answers.get(i);
+      if(a){ answered++; if(a === session[i].correct) correct++; }
+    }
+    return {correct, answered, total: session.length};
+  }
+
+  function renderStatus(){
+    const {correct, answered, total} = calcScore();
+    els.kpiPos.textContent = `📌 ${idx+1}/${total}`;
+    els.kpiScore.textContent = `✅ ${correct} / ${total}  •  ✍️ ${answered}`;
+
+    const q = session[idx];
+    const a = answers.get(idx);
+
+    els.status.innerHTML = "";
+    const tags = [];
+
+    // answered status
+    if(!a) tags.push(tag("Не відповіли", "warn"));
+    else tags.push(tag(`Відповідь: ${a}`, "good"));
+
+    // correctness depending on mode/finished
+    if(els.mode.value === "practice" && a){
+      if(a === q.correct) tags.push(tag("Правильно", "good"));
+      else tags.push(tag(`Неправильно • Правильна: ${q.correct || "?"}`, "bad"));
+    }else if(finished && a){
+      if(a === q.correct) tags.push(tag("Правильно", "good"));
+      else tags.push(tag(`Неправильно • Правильна: ${q.correct || "?"}`, "bad"));
+    }else if(finished && !a){
+      tags.push(tag(`Правильна: ${q.correct || "?"}`, "bad"));
+    }
+
+    tags.forEach(t => els.status.appendChild(t));
+  }
+
+  function tag(text, kind){
+    const s = document.createElement("span");
+    s.className = `tag ${kind||""}`;
+    s.textContent = text;
+    return s;
+  }
+
+  function finish(fromTimer=false){
+    if(finished) return;
+    finished = true;
+    stopTimer();
+
+    const {correct, answered, total} = calcScore();
+    const percent = total ? Math.round((correct/total)*100) : 0;
+
+    setPill(`Завершено • ${correct}/${total} (${percent}%)`);
+    els.kpiScore.textContent = `✅ ${correct}/${total} (${percent}%) • ✍️ ${answered}`;
+    if(fromTimer) {
+      els.status.appendChild(tag("Час вийшов", "bad"));
+    }
+    render(); // disables inputs
+
+    buildReview();
+    els.review.style.display = "block";
+  }
+
+  function buildReview(){
+    const {correct, total} = calcScore();
+    const percent = total ? Math.round((correct/total)*100) : 0;
+
+    const box = document.createElement("div");
+    box.innerHTML = `
+      <div class="small" style="margin-bottom:10px">
+        <b>Огляд спроби:</b> <span class="mono">${correct}/${total} (${percent}%)</span>.
+        Натисни на “Перейти до №”, щоб швидко відкрити питання.
+      </div>
+    `;
+    const frag = document.createDocumentFragment();
+    frag.appendChild(box);
+
+    session.forEach((q, i) => {
+      const a = answers.get(i) || "—";
+      const ok = (a !== "—" && a === q.correct);
+
+      const item = document.createElement("div");
+      item.className = "item";
+      item.innerHTML = `
+        <div class="hdr">
+          <div class="left">
+            <span class="tag ${ok ? "good":"bad"}">${ok ? "OK":"NO"}</span>
+            <span class="small">Питання ${i+1} (№${q.no})</span>
+          </div>
+          <div class="small mono">Твоя: ${a} • Правильна: ${q.correct || "?"}</div>
+        </div>
+        <div class="small" style="white-space:pre-wrap">${escapeHtml(q.text)}</div>
+      `;
+      item.addEventListener("click", () => { idx = i; render(); window.scrollTo({top:0, behavior:"smooth"}); });
+      frag.appendChild(item);
+    });
+
+    els.review.innerHTML = "";
+    els.review.appendChild(frag);
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  // UI actions
+  els.btnImport.addEventListener("click", () => {
+    const parsed = parseQuestions(els.raw.value || "");
+    bank = parsed;
+
+    // stats
+    const missingCorrect = bank.filter(q => !q.correct).map(q => q.no);
+    const withStar = bank.filter(q => q.correct).length;
+
+    if(!bank.length){
+      setPill("Помилка імпорту");
+      els.importStats.innerHTML = `<span class="danger">Не знайшов питань.</span> Перевір формат.`;
+      render();
+      return;
+    }
+
+    setPill(`Банк: ${bank.length} питань`);
+    els.importStats.innerHTML =
+      `Завантажено: <span class="mono">${bank.length}</span> питань • ` +
+      `з ключем: <span class="mono">${withStar}</span>` +
+      (missingCorrect.length ? ` • без відповіді: <span class="mono">${missingCorrect.slice(0,30).join(", ")}${missingCorrect.length>30?"…":""}</span>` : "");
+
+    // clamp count
+    els.count.value = Math.min(Number(els.count.value||50), bank.length);
+    render();
+  });
+
+  els.btnStart.addEventListener("click", () => {
+    if(!bank.length){
+      setPill("Спочатку імпорт");
+      els.importStats.innerHTML = `<span class="danger">Спочатку натисни “Імпортувати банк”.</span>`;
+      return;
+    }
+    buildSession();
+    setPill(`Сесія: ${session.length} питань • ${els.mode.value}`);
+    startTimerIfNeeded();
+    render();
+  });
+
+  els.btnReset.addEventListener("click", () => {
+    stopTimer();
+    bank = [];
+    session = [];
+    idx = 0;
+    answers = new Map();
+    finished = false;
+    setPill("Банк не завантажено");
+    els.importStats.textContent = "";
+    els.kpiTimer.textContent = "⏱️ —";
+    els.review.style.display = "none";
+    els.review.innerHTML = "";
+    render();
+  });
+
+  els.btnPrev.addEventListener("click", () => {
+    if(!session.length) return;
+    idx = Math.max(0, idx-1);
+    render();
+  });
+
+  els.btnNext.addEventListener("click", () => {
+    if(!session.length) return;
+    idx = Math.min(session.length-1, idx+1);
+    render();
+  });
+
+  els.btnFinish.addEventListener("click", () => {
+    if(!session.length) return;
+    finish(false);
+  });
+
+  els.btnReviewToggle.addEventListener("click", () => {
+    if(!session.length) return;
+    if(!finished){
+      // дозволимо показати огляд навіть до завершення (але без оцінки в exam)
+      buildReview();
+      els.review.style.display = (els.review.style.display === "none") ? "block" : "none";
+      return;
+    }
+    els.review.style.display = (els.review.style.display === "none") ? "block" : "none";
+  });
+
+  els.btnJump.addEventListener("click", () => {
+    if(!session.length) return;
+    const x = prompt(`Перейти до питання (1–${session.length}):`);
+    if(!x) return;
+    const n = Number(x);
+    if(!Number.isFinite(n) || n<1 || n>session.length) return;
+    idx = n-1;
+    render();
+  });
+
+  // keyboard nav
+  window.addEventListener("keydown", (e) => {
+    if(!session.length) return;
+    if(e.key === "ArrowLeft") { idx = Math.max(0, idx-1); render(); }
+    if(e.key === "ArrowRight") { idx = Math.min(session.length-1, idx+1); render(); }
+  });
+
+  // initial render
+  render();
+</script>
+</body>
+</html>
